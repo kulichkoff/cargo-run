@@ -1,3 +1,3 @@
 export default function Home() {
-  return <div></div>;
+  return <div>На главной странице пока ничего нет</div>;
 }
