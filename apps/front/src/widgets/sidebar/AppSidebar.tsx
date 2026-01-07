@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Home, Package, Truck, User } from 'lucide-react';
 import {
   Sidebar,
@@ -15,22 +16,22 @@ import {
 const routes = [
   {
     title: 'Главная',
-    url: '#',
+    url: '/',
     icon: Home,
   },
   {
     title: 'Сотрудники',
-    url: '#',
+    url: '/employees',
     icon: User,
   },
   {
     title: 'Транспорт',
-    url: '#',
+    url: '/vehicles',
     icon: Truck,
   },
   {
     title: 'Перевозки',
-    url: '#',
+    url: '/cargos',
     icon: Package,
   },
 ];
@@ -47,10 +48,10 @@ export function AppSidebar() {
               {routes.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
