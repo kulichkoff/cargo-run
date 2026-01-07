@@ -1,0 +1,11 @@
+{
+  "name": "cargo-run",
+  "version": "1.0.0",
+  "scripts": {
+    "dev:front": "pnpm --filter front dev",
+    "dev:api": "cd apps/api && air --build.cmd 'go build -o bin/knoweb-api cmd/main.go' --build.entrypoint 'bin/knoweb-api'",
+    "build": "pnpm -r build",
+    "format": "pnpm -r format"
+  },
+  "author": "Daniel Kulichkov <danchick03@gmail.com>"
+}
