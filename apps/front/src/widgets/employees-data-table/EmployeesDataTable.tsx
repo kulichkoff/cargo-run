@@ -14,7 +14,7 @@ export function EmployeesDataTable() {
     <div>
       <CreateEmployeeDialog>
         <div className="pb-3 flex flex-row w-full gap-3 items-center justify-end">
-          <DialogTrigger>
+          <DialogTrigger asChild>
             <Button size="sm">
               <Plus />
               Добавить
