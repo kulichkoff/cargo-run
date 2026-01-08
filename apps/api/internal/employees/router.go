@@ -15,11 +15,11 @@ func Router(r chi.Router) {
 	createEmployee := &createEmployeeHandler{
 		repository: employeeRepo,
 	}
-	// listEmployees := &listEmployeesHandler{
-	// 	repository: employeeRepo,
-	// }
+	listEmployees := &listEmployeesHandler{
+		repository: employeeRepo,
+	}
 
 	// Register routes
 	r.Post("/", createEmployee.Handle)
-	// r.Get("/", listEmployees.Handle)
+	r.Get("/", listEmployees.Handle)
 }

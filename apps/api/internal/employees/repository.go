@@ -22,3 +22,18 @@ func (r *EmployeeRepository) CreateEmployee(ctx context.Context, dto *createEmpl
 	err := row.Scan(&employee.ID, &employee.FirstName, &employee.LastName, &employee.CreatedAt, &employee.UpdatedAt)
 	return employee, err
 }
+
+func (r *EmployeeRepository) ListEmployees(ctx context.Context) ([]*EmployeeModel, error) {
+	rows, err := r.pool.Query(ctx, "select id, first_name, last_name, created_at, updated_at from employees")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	employees := make([]*EmployeeModel, 0, 32)
+	for rows.Next() {
+		employee := &EmployeeModel{}
+		rows.Scan(&employee.ID, &employee.FirstName, &employee.LastName, &employee.CreatedAt, &employee.UpdatedAt)
+		employees = append(employees, employee)
+	}
+	return employees, err
+}
