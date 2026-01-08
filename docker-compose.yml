@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres:18.1-alpine3.23
+    environment:
+      POSTGRES_USER_FILE: /run/secrets/db_user
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_pswd
+      PGDATA: /data/postgres
+      POSTGRES_DB: cargorun
+    volumes:
+      - db:/data/postgres
+    ports:
+      - "5332:5432"
+    networks:
+      - db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d postgres"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    secrets:
+      - db_pswd
+      - db_user
+
+networks:
+  db:
+    driver: bridge
+
+volumes:
+  db:
+
+secrets:
+  db_pswd:
+    environment: "DB_PASSWORD"
+  db_user:
+    environment: "DB_USER"
