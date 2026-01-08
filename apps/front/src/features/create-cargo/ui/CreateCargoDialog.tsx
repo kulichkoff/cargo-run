@@ -29,6 +29,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useEmployees } from '@/entities/employee';
+import { useVehicles } from '@/entities/vehicle';
 
 export type CreateCargoDialogProps = React.PropsWithChildren;
 
@@ -40,6 +41,7 @@ export function CreateCargoDialog({ children }: CreateCargoDialogProps) {
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
   const { data: employees, isPending: employeesPending } = useEmployees();
+  const { data: vehicles, isPending: vehiclesPending } = useVehicles();
 
   const form = useCreateCargoForm();
   const onSubmit: SubmitHandler<CreateCargoFormData> = (data) => {
@@ -95,30 +97,66 @@ export function CreateCargoDialog({ children }: CreateCargoDialogProps) {
                   <FormLabel>
                     Водитель<span className="text-red-500">*</span>
                   </FormLabel>
-                  <FormControl>
-                    <Select
-                      {...field}
-                      disabled={field.disabled || employeesPending}
-                    >
-                      <SelectTrigger className='w-full'>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    disabled={field.disabled || employeesPending}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder="Иванов И." />
                       </SelectTrigger>
-                      {!employeesPending && (
-                        <SelectContent>
-                          {employees!.map((employee) => (
-                            <SelectItem
-                              key={employee.id}
-                              value={employee.id.toString()}
-                            >{`${employee.lastName} ${employee.firstName}`}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      )}
-                    </Select>
-                  </FormControl>
+                    </FormControl>
+                    {!employeesPending && (
+                      <SelectContent>
+                        {employees!.map((employee) => (
+                          <SelectItem
+                            key={employee.id}
+                            value={employee.id.toString()}
+                          >{`${employee.lastName} ${employee.firstName}`}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    )}
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name="vehicleId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Машина<span className="text-red-500">*</span>
+                  </FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    disabled={field.disabled || vehiclesPending}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="МАЗ М012КВ134" />
+                      </SelectTrigger>
+                    </FormControl>
+                    {!vehiclesPending && (
+                      <SelectContent>
+                        {vehicles!.map((vehicle) => (
+                          <SelectItem
+                            key={vehicle.id}
+                            value={vehicle.id.toString()}
+                          >{`${vehicle.make ? vehicle.make + ' ' : ''}${vehicle.plateNumber}`}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    )}
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <Button type="submit">Сохранить</Button>
           </form>
         </Form>
