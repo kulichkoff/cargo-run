@@ -4,7 +4,7 @@ dev:
 	make -j2 dev-api dev-front
 
 dev-api:
-	cd apps/api && air --build.cmd 'go build -o bin/knoweb-api cmd/main.go' --build.entrypoint 'bin/knoweb-api'
+	cd apps/api && air --build.cmd 'go build -o bin/cargorun-api cmd/server/main.go' --build.entrypoint 'bin/cargorun-api'
 
 dev-web:
 	cd apps/front && pnpm dev
