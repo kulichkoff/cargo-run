@@ -1,6 +1,6 @@
-import { EmployeeModel } from '../employee';
-import { PaymentStatus } from '../payment';
-import { VehicleModel } from '../vehicle';
+import { EmployeeModel } from '@/entities/employee';
+import { PaymentStatus } from '@/entities/payment';
+import { VehicleModel } from '@/entities/vehicle';
 
 export interface CargoModel {
   id: number;

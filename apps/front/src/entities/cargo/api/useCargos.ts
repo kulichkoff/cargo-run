@@ -1,10 +1,10 @@
 import { environment } from '@/env';
-import { CargoModel } from '../cargo.model';
 import {
   queryOptions,
   useQuery,
   useSuspenseQuery,
 } from '@tanstack/react-query';
+import { CargoModel } from '../model';
 
 const fetchCargos = async (): Promise<CargoModel[]> => {
   const response = await fetch(`${environment.apiUrl}/cargos`);

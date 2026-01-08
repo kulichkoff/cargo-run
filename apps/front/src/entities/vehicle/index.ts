@@ -1,3 +1,2 @@
-export * from './vehicle.model';
-export * from './vehicle.columns';
-export * from './api/useVehicles';
+export * from './model';
+export * from './api';

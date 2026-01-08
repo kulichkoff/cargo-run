@@ -1,6 +1,6 @@
 import { environment } from '@/env';
-import type { CreateEmployeeDTO } from '../employee.model';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { CreateEmployeeDTO } from '../model';
 
 export function useCreateEmployeeMutation() {
   const queryClient = useQueryClient();

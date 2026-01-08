@@ -1,6 +1,7 @@
 import { ColumnDef } from '@tanstack/react-table';
+
+import { PaymentStatus } from '@/entities/payment';
 import { CargoDetailed } from './cargo.model';
-import { PaymentStatus } from '../payment';
 
 export const cargoColumns: ColumnDef<CargoDetailed>[] = [
   {

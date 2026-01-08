@@ -1,3 +1,2 @@
-export * from './cargo.model';
-export * from './cargo.columns';
+export * from './model';
 export * from './api';

@@ -3,8 +3,8 @@ import {
   useQuery,
   useSuspenseQuery,
 } from '@tanstack/react-query';
-import type { VehicleModel } from '../vehicle.model';
 import { environment } from '@/env';
+import { VehicleModel } from '../model';
 
 export const fetchVehicles = async (): Promise<VehicleModel[]> => {
   const response = await fetch(`${environment.apiUrl}/vehicles`);

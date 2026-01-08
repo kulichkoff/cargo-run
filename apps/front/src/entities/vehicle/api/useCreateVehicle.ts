@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { environment } from '@/env';
-import { CreateVehicleDTO } from '../vehicle.model';
+import { CreateVehicleDTO } from '../model';
 
 export function useCreateVehicleMutation() {
   const queryClient = useQueryClient();

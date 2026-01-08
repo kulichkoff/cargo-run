@@ -1,12 +1,12 @@
 import { environment } from '@/env';
-import { EmployeeModel } from '../employee.model';
 import {
   queryOptions,
   useQuery,
   useSuspenseQuery,
 } from '@tanstack/react-query';
+import { EmployeeModel } from '../model';
 
-export const fetchEmployees = async (): Promise<EmployeeModel[]> => {
+const fetchEmployees = async (): Promise<EmployeeModel[]> => {
   const response = await fetch(`${environment.apiUrl}/employees`);
   const data = await response.json();
   return data;
