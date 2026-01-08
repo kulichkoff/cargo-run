@@ -10,7 +10,6 @@ import {
 import { useSuspenseEmployees } from '@/entities/employee';
 import { useSuspenseVehicles } from '@/entities/vehicle';
 import { CreateCargoDialog } from '@/features/create-cargo/ui/CreateCargoDialog';
-import { CreateEmployeeDialog } from '@/features/create-employee';
 import { DataTable } from '@/shared/ui';
 import { Plus } from 'lucide-react';
 

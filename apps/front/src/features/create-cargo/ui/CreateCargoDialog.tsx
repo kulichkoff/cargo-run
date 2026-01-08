@@ -21,7 +21,6 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { FieldDescription, FieldLabel } from '@/components/ui/field';
 
 export type CreateCargoDialogProps = React.PropsWithChildren;
 
@@ -34,7 +33,7 @@ export function CreateCargoDialog({ children }: CreateCargoDialogProps) {
 
   const form = useCreateCargoForm();
   const onSubmit: SubmitHandler<CreateCargoFormData> = (data) => {
-    console.log('data');
+    console.log('data', data);
     // setDialogIsOpen(false);
     // form.reset();
   };
