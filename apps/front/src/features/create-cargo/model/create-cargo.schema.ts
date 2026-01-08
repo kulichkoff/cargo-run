@@ -1,8 +1,8 @@
 import z from 'zod';
 
 export const createCargoSchema = z.object({
-  employeeId: z.int(),
-  vehicleId: z.int(),
+  employeeId: z.string(),
+  vehicleId: z.string(),
   startDate: z.date(),
   deadlineDate: z.date(),
   price: z.string(),

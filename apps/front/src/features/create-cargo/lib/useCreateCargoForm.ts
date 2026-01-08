@@ -6,6 +6,8 @@ export const useCreateCargoForm = () =>
   useForm<CreateCargoFormData>({
     resolver: zodResolver(createCargoSchema),
     defaultValues: {
+      employeeId: '',
+      vehicleId: '',
       addressSequence: '',
       price: '',
       startDate: new Date(),

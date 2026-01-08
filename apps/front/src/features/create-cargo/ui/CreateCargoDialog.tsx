@@ -21,6 +21,14 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { useEmployees } from '@/entities/employee';
 
 export type CreateCargoDialogProps = React.PropsWithChildren;
 
@@ -30,6 +38,8 @@ export type CreateCargoDialogProps = React.PropsWithChildren;
  */
 export function CreateCargoDialog({ children }: CreateCargoDialogProps) {
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
+
+  const { data: employees, isPending: employeesPending } = useEmployees();
 
   const form = useCreateCargoForm();
   const onSubmit: SubmitHandler<CreateCargoFormData> = (data) => {
@@ -77,6 +87,38 @@ export function CreateCargoDialog({ children }: CreateCargoDialogProps) {
               )}
             />
 
+            <FormField
+              control={form.control}
+              name="employeeId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Водитель<span className="text-red-500">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Select
+                      {...field}
+                      disabled={field.disabled || employeesPending}
+                    >
+                      <SelectTrigger className='w-full'>
+                        <SelectValue placeholder="Иванов И." />
+                      </SelectTrigger>
+                      {!employeesPending && (
+                        <SelectContent>
+                          {employees!.map((employee) => (
+                            <SelectItem
+                              key={employee.id}
+                              value={employee.id.toString()}
+                            >{`${employee.lastName} ${employee.firstName}`}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      )}
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <Button type="submit">Сохранить</Button>
           </form>
         </Form>
