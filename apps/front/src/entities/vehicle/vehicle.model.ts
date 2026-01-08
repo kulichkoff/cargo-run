@@ -19,3 +19,5 @@ export interface VehicleModel {
    * - temperature_range (if refridgerated)
    */
 }
+
+export type CreateVehicleDTO = Omit<VehicleModel, 'id'>;
