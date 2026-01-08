@@ -1,5 +1,7 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
+import { DialogTrigger } from '@/components/ui/dialog';
 import {
   cargoColumns,
   CargoDetailed,
@@ -7,7 +9,10 @@ import {
 } from '@/entities/cargo';
 import { useSuspenseEmployees } from '@/entities/employee';
 import { useSuspenseVehicles } from '@/entities/vehicle';
+import { CreateCargoDialog } from '@/features/create-cargo/ui/CreateCargoDialog';
+import { CreateEmployeeDialog } from '@/features/create-employee';
 import { DataTable } from '@/shared/ui';
+import { Plus } from 'lucide-react';
 
 const useSuspenceCargosDetailed = () => {
   const { data: cargos } = useSuspenseCargos();
@@ -33,6 +38,16 @@ export function CargosDataTable() {
 
   return (
     <div>
+      <CreateCargoDialog>
+        <div className="pb-3 flex flex-row w-full gap-3 items-center justify-end">
+          <DialogTrigger asChild>
+            <Button size="sm">
+              <Plus />
+              Добавить
+            </Button>
+          </DialogTrigger>
+        </div>
+      </CreateCargoDialog>
       <DataTable columns={cargoColumns} data={cargos} />
     </div>
   );
