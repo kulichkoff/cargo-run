@@ -24,6 +24,7 @@ import { Plus } from 'lucide-react';
 import z from 'zod';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
 
 const vehicleSchema = z.object({
   plateNumber: z.string().min(7, 'Слишком короткий номер'),
@@ -38,6 +39,9 @@ type VehicleFormData = z.infer<typeof vehicleSchema>;
 export function VehiclesDataTable() {
   const { data: vehicles } = useSuspenseVehicles();
   const createVehicleMutation = useCreateVehicleMutation();
+
+  const [dialogIsOpen, setDialogIsOpen] = useState(false);
+
   const form = useForm<VehicleFormData>({
     resolver: zodResolver(vehicleSchema),
     defaultValues: {
@@ -53,12 +57,13 @@ export function VehiclesDataTable() {
       ...data,
       manufactureYear: parseInt(data.manufactureYear || '') || undefined,
     });
+    setDialogIsOpen(false);
     form.reset();
   };
 
   return (
     <div>
-      <Dialog>
+      <Dialog open={dialogIsOpen} onOpenChange={setDialogIsOpen}>
         <div className="pb-3 flex flex-row w-full gap-3 items-center justify-end">
           <DialogTrigger asChild>
             <Button size="sm" disabled={createVehicleMutation.isPending}>
