@@ -4,12 +4,11 @@ import {
   useSuspenseQuery,
 } from '@tanstack/react-query';
 import type { VehicleModel } from '../vehicle.model';
+import { environment } from '@/env';
 
 export const fetchVehicles = async (): Promise<VehicleModel[]> => {
-  // TODO switch to environment variables
-  const response = await fetch('http://localhost:3333/vehicles');
+  const response = await fetch(`${environment.apiUrl}/vehicles`);
   const data = await response.json();
-  console.log('data', data);
   return data;
 };
 
