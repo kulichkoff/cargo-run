@@ -20,3 +20,23 @@ migrate create -ext sql -dir ./database/migrations -seq <migration_name>
 # Example
 migrate create -ext sql -dir ./database/migrations -seq create_articles_table
 ```
+
+### sqlc
+
+First, install sqlc.
+
+Now, you can generate code.
+
+```bash
+sqlc generate
+```
+
+sqlc supports three main annotation types:
+
+- `:one` — Returns a single row (returns an error if no rows found)
+- `:many` — Returns multiple rows as a slice
+- `:exec` — Executes a statement without returning rows
+- `:execrows` — Executes and returns the number of affected rows
+- `:execresult` — Executes and returns the full result object
+
+Good example to see is in [vehicles.sql](./database/queries/vehicles.sql) queries.
