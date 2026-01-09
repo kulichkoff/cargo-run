@@ -12,7 +12,7 @@ export default function CargosPage() {
   void queryClient.prefetchQuery(cargosQueryOptions);
 
   return (
-    <div>
+    <div className='max-w-5xl sm:px-6'>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <CargosDataTable />
       </HydrationBoundary>
