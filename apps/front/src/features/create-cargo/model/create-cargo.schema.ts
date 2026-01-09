@@ -6,7 +6,6 @@ export const createCargoSchema = z.object({
   startDate: z.date(),
   deadlineDate: z.date(),
   price: z.string(),
-  paymentStatus: z.int(),
   addressSequence: z.string(),
 });
 

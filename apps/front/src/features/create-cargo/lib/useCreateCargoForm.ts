@@ -10,7 +10,5 @@ export const useCreateCargoForm = () =>
       vehicleId: '',
       addressSequence: '',
       price: '',
-      startDate: new Date(),
-      deadlineDate: new Date(),
     },
   });

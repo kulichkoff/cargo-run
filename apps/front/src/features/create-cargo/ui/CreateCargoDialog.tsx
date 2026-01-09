@@ -30,6 +30,13 @@ import {
 } from '@/components/ui/select';
 import { useEmployees } from '@/entities/employee';
 import { useVehicles } from '@/entities/vehicle';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { CalendarIcon } from 'lucide-react';
+import { Calendar } from '@/components/ui/calendar';
 
 export type CreateCargoDialogProps = React.PropsWithChildren;
 
@@ -156,6 +163,87 @@ export function CreateCargoDialog({ children }: CreateCargoDialogProps) {
                 </FormItem>
               )}
             />
+
+            <div className="flex gap-3">
+              {/* TODO move date pickers to separate component */}
+              <FormField
+                control={form.control}
+                name="startDate"
+                render={({ field }) => (
+                  <FormItem className="grow">
+                    <FormLabel>
+                      Начало<span className="text-red-500">*</span>
+                    </FormLabel>
+                    <Popover>
+                      <FormControl>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            data-empty={!field.value}
+                            className="data-[empty=true]:text-muted-foreground justify-start text-left font-normal"
+                          >
+                            <CalendarIcon />
+                            <span>
+                              {' '}
+                              {field.value
+                                ? field.value.toLocaleDateString()
+                                : 'Выберите дату'}
+                            </span>
+                          </Button>
+                        </PopoverTrigger>
+                      </FormControl>
+                      <PopoverContent className="w-auto p-0">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="deadlineDate"
+                render={({ field }) => (
+                  <FormItem className="grow">
+                    <FormLabel>
+                      Срок<span className="text-red-500">*</span>
+                    </FormLabel>
+                    <Popover>
+                      <FormControl>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            data-empty={!field.value}
+                            className="data-[empty=true]:text-muted-foreground justify-start text-left font-normal"
+                          >
+                            <CalendarIcon />
+                            <span>
+                              {' '}
+                              {field.value
+                                ? field.value.toLocaleDateString()
+                                : 'Выберите дату'}
+                            </span>
+                          </Button>
+                        </PopoverTrigger>
+                      </FormControl>
+                      <PopoverContent className="w-auto p-0">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <Button type="submit">Сохранить</Button>
           </form>
