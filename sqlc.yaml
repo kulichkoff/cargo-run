@@ -12,6 +12,7 @@ sql:
         json_tags_case_style: "camel"
         emit_interface: true
         emit_empty_slices: true
+        emit_pointers_for_null_types: true
         emit_exact_table_names: false
         emit_prepared_queries: false
         overrides:
