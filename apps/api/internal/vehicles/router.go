@@ -10,13 +10,10 @@ func Router(r chi.Router) {
 	querier := db.GetQuerier()
 	vehiclesRepo := NewRepository(querier)
 
-	createVehicle := &createVehicleHandler{
-		repository: vehiclesRepo,
-	}
-	listVehicles := &listVehiclesHandler{
+	handler := &HTTPHandler{
 		repository: vehiclesRepo,
 	}
 
-	r.Get("/", listVehicles.Handle)
-	r.Post("/", createVehicle.Handle)
+	r.Get("/", handler.List)
+	r.Post("/", handler.Create)
 }

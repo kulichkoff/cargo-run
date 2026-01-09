@@ -5,17 +5,17 @@ import (
 	"context"
 )
 
-type VehicleRepository struct {
+type Repository struct {
 	queries sqlc.Querier
 }
 
-func NewRepository(querier sqlc.Querier) *VehicleRepository {
-	return &VehicleRepository{
+func NewRepository(querier sqlc.Querier) *Repository {
+	return &Repository{
 		queries: querier,
 	}
 }
 
-func (r *VehicleRepository) mapVehicleRow(vehicleRow sqlc.Vehicle) *VehicleModel {
+func (r *Repository) mapVehicleRow(vehicleRow sqlc.Vehicle) *VehicleModel {
 	return &VehicleModel{
 		ID:              vehicleRow.ID,
 		PlateNumber:     vehicleRow.PlateNumber,
@@ -28,7 +28,7 @@ func (r *VehicleRepository) mapVehicleRow(vehicleRow sqlc.Vehicle) *VehicleModel
 	}
 }
 
-func (r *VehicleRepository) CreateVehicle(ctx context.Context, dto *createVehicleDTO) (*VehicleModel, error) {
+func (r *Repository) Create(ctx context.Context, dto *createVehicleDTO) (*VehicleModel, error) {
 	params := sqlc.CreateVehicleParams{
 		PlateNumber:     dto.PlateNumber,
 		Make:            dto.Make,
@@ -43,7 +43,7 @@ func (r *VehicleRepository) CreateVehicle(ctx context.Context, dto *createVehicl
 	return r.mapVehicleRow(vehicleRow), nil
 }
 
-func (r *VehicleRepository) ListVehicles(ctx context.Context) ([]*VehicleModel, error) {
+func (r *Repository) List(ctx context.Context) ([]*VehicleModel, error) {
 	vehiclesRows, err := r.queries.ListVehicles(ctx, sqlc.ListVehiclesParams{
 		Limit:  100,
 		Offset: 0,
