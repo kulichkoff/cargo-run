@@ -1,2 +1,2 @@
 export * from './useCargos';
-export * from './useUpadtePaymentStatus';
+export * from './useUpdateCargo';

@@ -20,7 +20,7 @@ import {
 import { CargoDetailed } from './cargo.model';
 import { Button } from '@/components/ui/button';
 import { MoreHorizontal } from 'lucide-react';
-import { useUpdatePaymentStatus } from '../api';
+import { useUpdateCargo } from '../api';
 
 export const cargoColumns: ColumnDef<CargoDetailed>[] = [
   {
@@ -77,7 +77,7 @@ export const cargoColumns: ColumnDef<CargoDetailed>[] = [
       const cargo = row.original;
 
       // eslint-disable-next-line react-hooks/rules-of-hooks
-      const paymentStatusMut = useUpdatePaymentStatus();
+      const paymentStatusMut = useUpdateCargo();
 
       const paymentStatusLabels = getPaymentStatusLabels();
       const paymentStatuses = PaymentStatusIterable;
@@ -104,7 +104,7 @@ export const cargoColumns: ColumnDef<CargoDetailed>[] = [
                       disabled={cargo.paymentStatus === status}
                       onClick={() =>
                         paymentStatusMut.mutate({
-                          cargoId: cargo.id,
+                          id: cargo.id,
                           paymentStatus: status,
                         })
                       }
