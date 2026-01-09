@@ -32,12 +32,12 @@ type Employee struct {
 }
 
 type Vehicle struct {
-	ID              int64       `json:"id"`
-	PlateNumber     string      `json:"plateNumber"`
-	Make            pgtype.Text `json:"make"`
-	Model           pgtype.Text `json:"model"`
-	Vin             pgtype.Text `json:"vin"`
-	ManufactureYear pgtype.Int4 `json:"manufactureYear"`
-	CreatedAt       time.Time   `json:"createdAt"`
-	UpdatedAt       time.Time   `json:"updatedAt"`
+	ID              int64     `json:"id"`
+	PlateNumber     string    `json:"plateNumber"`
+	Make            *string   `json:"make"`
+	Model           *string   `json:"model"`
+	Vin             *string   `json:"vin"`
+	ManufactureYear *int32    `json:"manufactureYear"`
+	CreatedAt       time.Time `json:"createdAt"`
+	UpdatedAt       time.Time `json:"updatedAt"`
 }

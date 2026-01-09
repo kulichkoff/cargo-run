@@ -1,40 +1,60 @@
 package vehicles
 
 import (
+	"cargorun/db/sqlc"
 	"context"
-
-	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type VehicleRepository struct {
-	pool *pgxpool.Pool
+	queries sqlc.Querier
 }
 
-func NewRepository(pool *pgxpool.Pool) *VehicleRepository {
+func NewRepository(querier sqlc.Querier) *VehicleRepository {
 	return &VehicleRepository{
-		pool: pool,
+		queries: querier,
+	}
+}
+
+func (r *VehicleRepository) mapVehicleRow(vehicleRow sqlc.Vehicle) *VehicleModel {
+	return &VehicleModel{
+		ID:              vehicleRow.ID,
+		PlateNumber:     vehicleRow.PlateNumber,
+		Make:            vehicleRow.Make,
+		Model:           vehicleRow.Model,
+		Vin:             vehicleRow.Vin,
+		ManufactureYear: vehicleRow.ManufactureYear,
+		CreatedAt:       vehicleRow.CreatedAt,
+		UpdatedAt:       vehicleRow.UpdatedAt,
 	}
 }
 
 func (r *VehicleRepository) CreateVehicle(ctx context.Context, dto *createVehicleDTO) (*VehicleModel, error) {
-	row := r.pool.QueryRow(ctx, "insert into vehicles (plate_number, make, model, vin, manufacture_year) values ($1, $2, $3, $4, $5) returning id, plate_number, make, model, vin, manufacture_year, created_at, updated_at", dto.PlateNumber, dto.Make, dto.Model, dto.Vin, dto.ManufactureYear)
-	vehicle := &VehicleModel{}
-	err := row.Scan(&vehicle.ID, &vehicle.PlateNumber, &vehicle.Make, &vehicle.Model, &vehicle.Vin, &vehicle.ManufactureYear, &vehicle.CreatedAt, &vehicle.UpdatedAt)
-	return vehicle, err
-}
-
-func (r *VehicleRepository) ListVehicles(ctx context.Context) ([]*VehicleModel, error) {
-	rows, err := r.pool.Query(ctx, "select id, plate_number, make, model, vin, manufacture_year, created_at, updated_at from vehicles")
+	params := sqlc.CreateVehicleParams{
+		PlateNumber:     dto.PlateNumber,
+		Make:            dto.Make,
+		Model:           dto.Model,
+		Vin:             dto.Vin,
+		ManufactureYear: dto.ManufactureYear,
+	}
+	vehicleRow, err := r.queries.CreateVehicle(ctx, params)
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	return r.mapVehicleRow(vehicleRow), nil
+}
 
-	vehicles := make([]*VehicleModel, 0, 32)
-	for rows.Next() {
-		vehicle := &VehicleModel{}
-		rows.Scan(&vehicle.ID, &vehicle.PlateNumber, &vehicle.Make, &vehicle.Model, &vehicle.Vin, &vehicle.ManufactureYear, &vehicle.CreatedAt, &vehicle.UpdatedAt)
-		vehicles = append(vehicles, vehicle)
+func (r *VehicleRepository) ListVehicles(ctx context.Context) ([]*VehicleModel, error) {
+	vehiclesRows, err := r.queries.ListVehicles(ctx, sqlc.ListVehiclesParams{
+		Limit:  100,
+		Offset: 0,
+	})
+	if err != nil {
+		return nil, err
 	}
-	return vehicles, err
+
+	vehicles := make([]*VehicleModel, len(vehiclesRows))
+	for i, row := range vehiclesRows {
+		vehicles[i] = r.mapVehicleRow(row)
+	}
+	return vehicles, nil
 }

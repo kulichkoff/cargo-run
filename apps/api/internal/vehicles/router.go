@@ -7,8 +7,8 @@ import (
 )
 
 func Router(r chi.Router) {
-	pool := db.GetPool()
-	vehiclesRepo := NewRepository(pool)
+	querier := db.GetQuerier()
+	vehiclesRepo := NewRepository(querier)
 
 	createVehicle := &createVehicleHandler{
 		repository: vehiclesRepo,

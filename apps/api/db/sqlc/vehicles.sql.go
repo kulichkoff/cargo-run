@@ -7,8 +7,6 @@ package sqlc
 
 import (
 	"context"
-
-	"github.com/jackc/pgx/v5/pgtype"
 )
 
 const createVehicle = `-- name: CreateVehicle :one
@@ -19,11 +17,11 @@ RETURNING id, plate_number, make, model, vin, manufacture_year, created_at, upda
 `
 
 type CreateVehicleParams struct {
-	PlateNumber     string      `json:"plateNumber"`
-	Make            pgtype.Text `json:"make"`
-	Model           pgtype.Text `json:"model"`
-	Vin             pgtype.Text `json:"vin"`
-	ManufactureYear pgtype.Int4 `json:"manufactureYear"`
+	PlateNumber     string  `json:"plateNumber"`
+	Make            *string `json:"make"`
+	Model           *string `json:"model"`
+	Vin             *string `json:"vin"`
+	ManufactureYear *int32  `json:"manufactureYear"`
 }
 
 // Inserts a new vehicle and returns the created result
@@ -122,12 +120,12 @@ RETURNING id, plate_number, make, model, vin, manufacture_year, created_at, upda
 `
 
 type UpdateVehicleParams struct {
-	ID              int64       `json:"id"`
-	PlateNumber     string      `json:"plateNumber"`
-	Make            pgtype.Text `json:"make"`
-	Model           pgtype.Text `json:"model"`
-	Vin             pgtype.Text `json:"vin"`
-	ManufactureYear pgtype.Int4 `json:"manufactureYear"`
+	ID              int64   `json:"id"`
+	PlateNumber     string  `json:"plateNumber"`
+	Make            *string `json:"make"`
+	Model           *string `json:"model"`
+	Vin             *string `json:"vin"`
+	ManufactureYear *int32  `json:"manufactureYear"`
 }
 
 // Updates a vehicle's information and returns the updated record

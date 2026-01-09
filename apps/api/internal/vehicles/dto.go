@@ -5,5 +5,5 @@ type createVehicleDTO struct {
 	Make            *string `json:"make,omitempty"`
 	Model           *string `json:"model,omitempty"`
 	Vin             *string `json:"vin,omitempty"`
-	ManufactureYear *uint   `json:"manufactureYear,omitempty"`
+	ManufactureYear *int32   `json:"manufactureYear,omitempty"`
 }

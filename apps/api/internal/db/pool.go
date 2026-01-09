@@ -1,6 +1,7 @@
 package db
 
 import (
+	"cargorun/db/sqlc"
 	"cargorun/internal/config"
 	"context"
 	"log/slog"
@@ -31,4 +32,9 @@ func GetPool() *pgxpool.Pool {
 		}
 	}
 	return pool
+}
+
+func GetQuerier() sqlc.Querier {
+	p := GetPool()
+	return sqlc.New(p)
 }
