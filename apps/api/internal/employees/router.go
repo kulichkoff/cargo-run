@@ -8,18 +8,15 @@ import (
 
 func Router(r chi.Router) {
 	// Init repository
-	pool := db.GetPool()
-	employeeRepo := NewRepository(pool)
+	querier := db.GetQuerier()
+	employeeRepo := NewRepository(querier)
 
 	// Init handlers
-	createEmployee := &createEmployeeHandler{
-		repository: employeeRepo,
-	}
-	listEmployees := &listEmployeesHandler{
+	handler := &EmployeesHandler{
 		repository: employeeRepo,
 	}
 
 	// Register routes
-	r.Post("/", createEmployee.Handle)
-	r.Get("/", listEmployees.Handle)
+	r.Post("/", handler.HandleCreate)
+	r.Get("/", handler.HandleList)
 }

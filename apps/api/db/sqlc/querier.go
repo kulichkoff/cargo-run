@@ -9,12 +9,20 @@ import (
 )
 
 type Querier interface {
+	CreateCargo(ctx context.Context, arg CreateCargoParams) (Cargo, error)
+	CreateEmployee(ctx context.Context, arg CreateEmployeeParams) (Employee, error)
 	// Inserts a new vehicle and returns the created result
 	CreateVehicle(ctx context.Context, arg CreateVehicleParams) (Vehicle, error)
+	GetCargo(ctx context.Context, id int64) (Cargo, error)
+	GetEmployee(ctx context.Context, id int64) (Employee, error)
 	// Retrieves a single vehicle by ID
 	GetVehicle(ctx context.Context, id int64) (Vehicle, error)
+	ListCargos(ctx context.Context, arg ListCargosParams) ([]Cargo, error)
+	ListEmployees(ctx context.Context, arg ListEmployeesParams) ([]Employee, error)
 	// Retrieves all vehicles ordered by plate number with pagination
 	ListVehicles(ctx context.Context, arg ListVehiclesParams) ([]Vehicle, error)
+	UpdateCargo(ctx context.Context, arg UpdateCargoParams) (Cargo, error)
+	UpdateEmployee(ctx context.Context, arg UpdateEmployeeParams) (Employee, error)
 	// Updates a vehicle's information and returns the updated record
 	UpdateVehicle(ctx context.Context, arg UpdateVehicleParams) (Vehicle, error)
 }

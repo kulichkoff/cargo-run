@@ -1,39 +1,52 @@
 package employees
 
 import (
+	"cargorun/db/sqlc"
 	"context"
-
-	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-type EmployeeRepository struct {
-	pool *pgxpool.Pool
+type Repository struct {
+	querier sqlc.Querier
 }
 
-func NewRepository(pool *pgxpool.Pool) *EmployeeRepository {
-	return &EmployeeRepository{
-		pool: pool,
+func NewRepository(querier sqlc.Querier) *Repository {
+	return &Repository{
+		querier: querier,
 	}
 }
 
-func (r *EmployeeRepository) CreateEmployee(ctx context.Context, dto *createEmployeeDTO) (*EmployeeModel, error) {
-	row := r.pool.QueryRow(ctx, "insert into employees (first_name, last_name) values ($1, $2) returning id, first_name, last_name, created_at, updated_at", dto.FirstName, dto.LastName)
-	employee := &EmployeeModel{}
-	err := row.Scan(&employee.ID, &employee.FirstName, &employee.LastName, &employee.CreatedAt, &employee.UpdatedAt)
-	return employee, err
+func (r *Repository) mapEmployeeRow(row sqlc.Employee) *EmployeeModel {
+	return &EmployeeModel{
+		ID:        row.ID,
+		FirstName: row.FirstName,
+		LastName:  row.LastName,
+		CreatedAt: row.CreatedAt,
+		UpdatedAt: row.UpdatedAt,
+	}
 }
 
-func (r *EmployeeRepository) ListEmployees(ctx context.Context) ([]*EmployeeModel, error) {
-	rows, err := r.pool.Query(ctx, "select id, first_name, last_name, created_at, updated_at from employees")
+func (r *Repository) Create(ctx context.Context, dto *createEmployeeDTO) (*EmployeeModel, error) {
+	row, err := r.querier.CreateEmployee(ctx, sqlc.CreateEmployeeParams{
+		FirstName: dto.FirstName,
+		LastName:  dto.LastName,
+	})
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
-	employees := make([]*EmployeeModel, 0, 32)
-	for rows.Next() {
-		employee := &EmployeeModel{}
-		rows.Scan(&employee.ID, &employee.FirstName, &employee.LastName, &employee.CreatedAt, &employee.UpdatedAt)
-		employees = append(employees, employee)
+	return r.mapEmployeeRow(row), nil
+}
+
+func (r *Repository) List(ctx context.Context) ([]*EmployeeModel, error) {
+	rows, err := r.querier.ListEmployees(ctx, sqlc.ListEmployeesParams{
+		Limit:  100,
+		Offset: 0,
+	})
+	if err != nil {
+		return nil, err
 	}
-	return employees, err
+	employeesList := make([]*EmployeeModel, len(rows))
+	for i, row := range rows {
+		employeesList[i] = r.mapEmployeeRow(row)
+	}
+	return employeesList, nil
 }
