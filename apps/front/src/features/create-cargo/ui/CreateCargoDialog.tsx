@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { parseRoute, useCreateCargoForm } from '../lib';
 import { SubmitHandler, useWatch } from 'react-hook-form';
-import { CreateCargoFormData } from '../model';
+import { CreateCargoDTO, CreateCargoFormData } from '../model';
 import {
   Dialog,
   DialogContent,
@@ -37,6 +37,8 @@ import {
 } from '@/components/ui/popover';
 import { CalendarIcon } from 'lucide-react';
 import { Calendar } from '@/components/ui/calendar';
+import { PaymentStatus } from '@/entities/payment';
+import { useCreateCargoMut } from '../api';
 
 export type CreateCargoDialogProps = React.PropsWithChildren;
 
@@ -45,6 +47,8 @@ export type CreateCargoDialogProps = React.PropsWithChildren;
  * to enable dialog open
  */
 export function CreateCargoDialog({ children }: CreateCargoDialogProps) {
+  const createCargoMut = useCreateCargoMut();
+
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
   const { data: employees, isPending: employeesPending } = useEmployees();
@@ -52,9 +56,17 @@ export function CreateCargoDialog({ children }: CreateCargoDialogProps) {
 
   const form = useCreateCargoForm();
   const onSubmit: SubmitHandler<CreateCargoFormData> = (data) => {
-    console.log('data', data);
-    // setDialogIsOpen(false);
-    // form.reset();
+    const dto: CreateCargoDTO = {
+      ...data,
+      addressSequence: parseRoute(addressSequenceValue),
+      vehicleId: +data.vehicleId,
+      employeeId: +data.employeeId,
+      paymentStatus: PaymentStatus.Pending,
+      price: parseFloat(data.price),
+    };
+    createCargoMut.mutate(dto);
+    setDialogIsOpen(false);
+    form.reset();
   };
   const addressSequenceValue = useWatch({
     control: form.control,
@@ -105,11 +117,7 @@ export function CreateCargoDialog({ children }: CreateCargoDialogProps) {
                     Цена<span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
-                    <Input
-                    type='number'
-                      placeholder="1234567.89"
-                      {...field}
-                    />
+                    <Input type="number" placeholder="1234567.89" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

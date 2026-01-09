@@ -9,7 +9,7 @@ import {
 } from '@/entities/cargo';
 import { useSuspenseEmployees } from '@/entities/employee';
 import { useSuspenseVehicles } from '@/entities/vehicle';
-import { CreateCargoDialog } from '@/features/create-cargo/ui/CreateCargoDialog';
+import { CreateCargoDialog } from '@/features/create-cargo';
 import { DataTable } from '@/shared/ui';
 import { Plus } from 'lucide-react';
 
@@ -47,7 +47,9 @@ export function CargosDataTable() {
           </DialogTrigger>
         </div>
       </CreateCargoDialog>
-      <DataTable columns={cargoColumns} data={cargos} />
+      <div className="overflow-x-scroll sm:max-w-70 lg:max-w-full">
+        <DataTable columns={cargoColumns} data={cargos} />
+      </div>
     </div>
   );
 }
