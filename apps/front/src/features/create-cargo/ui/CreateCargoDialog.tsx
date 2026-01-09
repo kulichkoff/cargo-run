@@ -98,6 +98,26 @@ export function CreateCargoDialog({ children }: CreateCargoDialogProps) {
 
             <FormField
               control={form.control}
+              name="price"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Цена<span className="text-red-500">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                    type='number'
+                      placeholder="1234567.89"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
               name="employeeId"
               render={({ field }) => (
                 <FormItem>
