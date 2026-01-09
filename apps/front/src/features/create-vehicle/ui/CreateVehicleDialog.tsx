@@ -35,8 +35,13 @@ export function CreateVehicleDialog({ children }: CreateVehicleDialogProps) {
 
   const form = useCreateVehicleForm();
   const onSubmit: SubmitHandler<CreateVehicleFormData> = (data) => {
+    const cleaned = Object.fromEntries(
+    Object.entries(data).filter(
+      ([_, value]) => value !== ""
+    )
+  ) as CreateVehicleFormData;
     createVehicleMutation.mutate({
-      ...data,
+      ...cleaned,
       manufactureYear: parseInt(data.manufactureYear || '') || undefined,
     });
     setDialogIsOpen(false);
