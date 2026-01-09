@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS vehicles (
     plate_number VARCHAR(128) NOT NULL UNIQUE,
     make VARCHAR(128),
     model VARCHAR(128),
-    vin VARCHAR(128) UNIQUE,
+    vin VARCHAR(128),
     manufacture_year INT,
     created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
     updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
