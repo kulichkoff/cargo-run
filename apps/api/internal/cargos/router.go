@@ -9,20 +9,17 @@ import (
 
 func Router(r chi.Router) {
 	// Init repository
-	pool := db.GetPool()
-	repo := NewRepository(pool)
+	querier := db.GetQuerier()
+	repo := NewRepository(querier)
 
 	// Init handlers
-	createCargo := &createCargoHandler{
-		repository: repo,
-	}
-	listCargos := &listCargosHandler{
+	handler := &CargosHandler{
 		repository: repo,
 	}
 
 	// Register routes
-	r.Post("/", createCargo.Handle)
-	r.Get("/", listCargos.Handle)
+	r.Post("/", handler.HandleCreate)
+	r.Get("/", handler.HandleList)
 }
 
 func cargoContext(next http.Handler) http.Handler {

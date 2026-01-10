@@ -3,14 +3,14 @@ package cargos
 import "time"
 
 type CargoModel struct {
-	ID              int       `json:"id"`
+	ID              int64     `json:"id"`
 	AddressSequence []string  `json:"addressSequence"`
-	EmployeeID      int       `json:"employeeId"`
-	VehicleID       int       `json:"vehicleId"`
+	EmployeeID      int64     `json:"employeeId"`
+	VehicleID       int64     `json:"vehicleId"`
 	StartDate       time.Time `json:"startDate"`
 	DeadlineDate    time.Time `json:"deadlineDate"`
 	Price           float64   `json:"price"`
-	PaymentStatus   int       `json:"paymentStatus"`
+	PaymentStatus   int32     `json:"paymentStatus"`
 	CreatedAt       time.Time `json:"createdAt"`
 	UpdatedAt       time.Time `json:"updatedAt"`
 }

@@ -1,24 +1,23 @@
 package cargos
 
 import (
+	"cargorun/db/sqlc"
 	"context"
-
-	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type CargosRepository struct {
-	pool *pgxpool.Pool
+	querier sqlc.Querier
 }
 
-func NewRepository(pool *pgxpool.Pool) *CargosRepository {
+func NewRepository(querier sqlc.Querier) *CargosRepository {
 	return &CargosRepository{
-		pool: pool,
+		querier: querier,
 	}
 }
 
-func (r *CargosRepository) CreateCargo(ctx context.Context, dto *createCargoDTO) (*CargoModel, error) {
-	row := r.pool.QueryRow(ctx, "insert into cargos (address_sequence, employee_id, vehicle_id, start_date, deadline_date, price, payment_status) values ($1, $2, $3, $4, $5, $6, $7) returning id, created_at", dto.AddressSequence, dto.EmployeeID, dto.VehicleID, dto.StartDate, dto.DeadlineDate, dto.Price, dto.PaymentStatus)
-	cargo := &CargoModel{
+func (r *CargosRepository) mapCargoRow(dto sqlc.Cargo) *CargoModel {
+	return &CargoModel{
+		ID:              dto.ID,
 		AddressSequence: dto.AddressSequence,
 		EmployeeID:      dto.EmployeeID,
 		VehicleID:       dto.VehicleID,
@@ -26,24 +25,38 @@ func (r *CargosRepository) CreateCargo(ctx context.Context, dto *createCargoDTO)
 		DeadlineDate:    dto.DeadlineDate,
 		Price:           dto.Price,
 		PaymentStatus:   dto.PaymentStatus,
+		CreatedAt:       dto.CreatedAt,
+		UpdatedAt:       dto.UpdatedAt,
 	}
-	err := row.Scan(&cargo.ID, &cargo.CreatedAt)
-	cargo.UpdatedAt = cargo.CreatedAt
-	return cargo, err
 }
 
-func (r *CargosRepository) ListCargos(ctx context.Context) ([]*CargoModel, error) {
-	rows, err := r.pool.Query(ctx, "select id, address_sequence, employee_id, vehicle_id, start_date, deadline_date, price, payment_status, created_at, updated_at from cargos")
+func (r *CargosRepository) Create(ctx context.Context, dto *createCargoDTO) (*CargoModel, error) {
+	row, err := r.querier.CreateCargo(ctx, sqlc.CreateCargoParams{
+		AddressSequence: dto.AddressSequence,
+		EmployeeID:      dto.EmployeeID,
+		VehicleID:       dto.VehicleID,
+		StartDate:       dto.StartDate,
+		DeadlineDate:    dto.DeadlineDate,
+		Price:           dto.Price,
+	})
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
-	employees := make([]*CargoModel, 0, 32)
-	for rows.Next() {
-		cargo := &CargoModel{}
-		rows.Scan(&cargo.ID, &cargo.AddressSequence, &cargo.EmployeeID, &cargo.VehicleID, &cargo.StartDate, &cargo.DeadlineDate, &cargo.Price, &cargo.PaymentStatus, &cargo.CreatedAt, &cargo.UpdatedAt)
-		employees = append(employees, cargo)
+	return r.mapCargoRow(row), nil
+}
+
+func (r *CargosRepository) List(ctx context.Context) ([]*CargoModel, error) {
+	rows, err := r.querier.ListCargos(ctx, sqlc.ListCargosParams{
+		Limit:  100,
+		Offset: 0,
+	})
+	if err != nil {
+		return nil, err
 	}
-	return employees, err
+	cargos := make([]*CargoModel, len(rows))
+	for i, row := range rows {
+		cargos[i] = r.mapCargoRow(row)
+	}
+	return cargos, err
 
 }

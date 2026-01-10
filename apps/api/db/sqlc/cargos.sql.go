@@ -8,8 +8,6 @@ package sqlc
 import (
 	"context"
 	"time"
-
-	"github.com/jackc/pgx/v5/pgtype"
 )
 
 const createCargo = `-- name: CreateCargo :one
@@ -25,12 +23,12 @@ RETURNING id, address_sequence, employee_id, vehicle_id, start_date, deadline_da
 `
 
 type CreateCargoParams struct {
-	AddressSequence []string       `json:"addressSequence"`
-	EmployeeID      int64          `json:"employeeId"`
-	VehicleID       int64          `json:"vehicleId"`
-	StartDate       time.Time      `json:"startDate"`
-	DeadlineDate    time.Time      `json:"deadlineDate"`
-	Price           pgtype.Numeric `json:"price"`
+	AddressSequence []string  `json:"addressSequence"`
+	EmployeeID      int64     `json:"employeeId"`
+	VehicleID       int64     `json:"vehicleId"`
+	StartDate       time.Time `json:"startDate"`
+	DeadlineDate    time.Time `json:"deadlineDate"`
+	Price           float64   `json:"price"`
 }
 
 func (q *Queries) CreateCargo(ctx context.Context, arg CreateCargoParams) (Cargo, error) {
@@ -139,14 +137,14 @@ RETURNING id, address_sequence, employee_id, vehicle_id, start_date, deadline_da
 `
 
 type UpdateCargoParams struct {
-	ID              int64          `json:"id"`
-	AddressSequence []string       `json:"addressSequence"`
-	EmployeeID      int64          `json:"employeeId"`
-	VehicleID       int64          `json:"vehicleId"`
-	StartDate       time.Time      `json:"startDate"`
-	DeadlineDate    time.Time      `json:"deadlineDate"`
-	Price           pgtype.Numeric `json:"price"`
-	PaymentStatus   int32          `json:"paymentStatus"`
+	ID              int64     `json:"id"`
+	AddressSequence []string  `json:"addressSequence"`
+	EmployeeID      int64     `json:"employeeId"`
+	VehicleID       int64     `json:"vehicleId"`
+	StartDate       time.Time `json:"startDate"`
+	DeadlineDate    time.Time `json:"deadlineDate"`
+	Price           float64   `json:"price"`
+	PaymentStatus   int32     `json:"paymentStatus"`
 }
 
 func (q *Queries) UpdateCargo(ctx context.Context, arg UpdateCargoParams) (Cargo, error) {
