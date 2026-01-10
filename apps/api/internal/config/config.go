@@ -7,8 +7,8 @@ import (
 )
 
 var (
-	serveFilesPath string = "data"
-	databaseURL    string
+	databaseURL string
+	jwtSecret   string
 )
 
 // Must load configuration or panics
@@ -23,6 +23,7 @@ var (
 //
 // - DB_NAME
 func MustLoad() {
+	jwtSecret = mustLoadSecret("JWT_SECRET", "JWT_SECRET_FILE")
 	postgresUser := mustLoadSecret("DB_USER", "DB_USER_FILE")
 	postgresPswd := mustLoadSecret("DB_PASSWORD", "DB_PASSWORD_FILE")
 
@@ -77,4 +78,8 @@ func loadFromFile(filePath string) (string, error) {
 
 func DatabaseURL() string {
 	return databaseURL
+}
+
+func JWTSecret() string {
+	return jwtSecret
 }

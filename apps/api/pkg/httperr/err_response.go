@@ -40,3 +40,10 @@ func ErrInternalServerError(err error) render.Renderer {
 		ErrorText:      err.Error(),
 	}
 }
+
+func ErrUnauthorized() render.Renderer {
+	return &ErrResponse{
+		HTTPStatusCode: http.StatusUnauthorized,
+		StatusText:     "Unauthorized",
+	}
+}

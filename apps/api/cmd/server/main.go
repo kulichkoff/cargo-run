@@ -1,6 +1,7 @@
 package main
 
 import (
+	"cargorun/internal/auth"
 	"cargorun/internal/cargos"
 	"cargorun/internal/config"
 	"cargorun/internal/employees"
@@ -10,10 +11,15 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
+	"github.com/go-chi/jwtauth/v5"
 )
 
 func main() {
 	config.MustLoad()
+	jwtSecret := config.JWTSecret()
+
+	auth.MustInit(jwtSecret)
+	jwtToken := auth.TokenAuth()
 
 	r := chi.NewRouter()
 	r.Use(middleware.Recoverer)
@@ -32,9 +38,19 @@ func main() {
 		MaxAge:           300, // Maximum value not ignored by any of major browsers
 	}))
 
-	r.Route("/employees", employees.Router)
-	r.Route("/vehicles", vehicles.Router)
-	r.Route("/cargos", cargos.Router)
+	r.Route("/auth", func(r chi.Router) {
+		authHandler := &auth.HTTPHandler{}
+		r.Post("/login", authHandler.HandleLogin)
+	})
+
+	r.Group(func(r chi.Router) {
+		r.Use(jwtauth.Verifier(jwtToken))
+		r.Use(auth.JWTAuthenticator(jwtToken))
+
+		r.Route("/employees", employees.Router)
+		r.Route("/vehicles", vehicles.Router)
+		r.Route("/cargos", cargos.Router)
+	})
 
 	println("Server started on http://localhost:3333")
 	http.ListenAndServe(":3333", r)
