@@ -60,3 +60,28 @@ func (r *CargosRepository) List(ctx context.Context) ([]*CargoModel, error) {
 	return cargos, err
 
 }
+
+func (r *CargosRepository) Get(ctx context.Context, id int64) (*CargoModel, error) {
+	row, err := r.querier.GetCargo(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	return r.mapCargoRow(row), nil
+}
+
+func (r *CargosRepository) Update(ctx context.Context, id int64, dto *updateCargoDTO) (*CargoModel, error) {
+	row, err := r.querier.UpdateCargo(ctx, sqlc.UpdateCargoParams{
+		ID:              id,
+		AddressSequence: dto.AddressSequence,
+		EmployeeID:      dto.EmployeeID,
+		VehicleID:       dto.VehicleID,
+		StartDate:       dto.StartDate,
+		DeadlineDate:    dto.DeadlineDate,
+		Price:           dto.Price,
+		PaymentStatus:   dto.PaymentStatus,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return r.mapCargoRow(row), nil
+}

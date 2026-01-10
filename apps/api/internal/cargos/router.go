@@ -2,7 +2,6 @@ package cargos
 
 import (
 	"cargorun/internal/db"
-	"net/http"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -20,8 +19,9 @@ func Router(r chi.Router) {
 	// Register routes
 	r.Post("/", handler.HandleCreate)
 	r.Get("/", handler.HandleList)
-}
-
-func cargoContext(next http.Handler) http.Handler {
-	return http.HandlerFunc(func (w http.ResponseWriter, r *http.Request) {})
+	r.Route("/{cargoID}", func(r chi.Router) {
+		r.Use(handler.CargoContext)
+		r.Get("/", handler.HandleGet)
+		r.Patch("/", handler.HandlePatch)
+	})
 }

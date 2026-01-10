@@ -17,6 +17,16 @@ sql:
         emit_prepared_queries: false
         overrides:
           - db_type: "timestamptz"
+            go_type:
+              type: "time.Time"
+              pointer: true
+            nullable: true
+          - db_type: "timestamptz"
             go_type: "time.Time"
+          - db_type: "pg_catalog.numeric"
+            go_type:
+              type: "float64"
+              pointer: true
+            nullable: true
           - db_type: "pg_catalog.numeric"
             go_type: "float64"

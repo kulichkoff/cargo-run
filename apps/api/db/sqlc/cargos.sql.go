@@ -124,27 +124,27 @@ func (q *Queries) ListCargos(ctx context.Context, arg ListCargosParams) ([]Cargo
 const updateCargo = `-- name: UpdateCargo :one
 UPDATE cargos
 SET
-    address_sequence = $2,
-    employee_id = $3,
-    vehicle_id = $4,
-    start_date = $5,
-    deadline_date = $6,
-    price = $7,
-    payment_status = $8,
-    updated_ad = now()
+    address_sequence = COALESCE($2, address_sequence),
+    employee_id = COALESCE($3, employee_id),
+    vehicle_id = COALESCE($4, vehicle_id),
+    start_date = COALESCE($5, start_date),
+    deadline_date = COALESCE($6, deadline_date),
+    price = COALESCE($7, price),
+    payment_status = COALESCE($8, payment_status),
+    updated_at = now()
 WHERE id = $1
 RETURNING id, address_sequence, employee_id, vehicle_id, start_date, deadline_date, price, payment_status, created_at, updated_at
 `
 
 type UpdateCargoParams struct {
-	ID              int64     `json:"id"`
-	AddressSequence []string  `json:"addressSequence"`
-	EmployeeID      int64     `json:"employeeId"`
-	VehicleID       int64     `json:"vehicleId"`
-	StartDate       time.Time `json:"startDate"`
-	DeadlineDate    time.Time `json:"deadlineDate"`
-	Price           float64   `json:"price"`
-	PaymentStatus   int32     `json:"paymentStatus"`
+	ID              int64      `json:"id"`
+	AddressSequence []string   `json:"addressSequence"`
+	EmployeeID      *int64     `json:"employeeId"`
+	VehicleID       *int64     `json:"vehicleId"`
+	StartDate       *time.Time `json:"startDate"`
+	DeadlineDate    *time.Time `json:"deadlineDate"`
+	Price           *float64   `json:"price"`
+	PaymentStatus   *int32     `json:"paymentStatus"`
 }
 
 func (q *Queries) UpdateCargo(ctx context.Context, arg UpdateCargoParams) (Cargo, error) {
