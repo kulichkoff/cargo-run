@@ -8,10 +8,7 @@ export function useCreateEmployeeMutation() {
 
   return useMutation({
     mutationFn: async (dto: CreateEmployeeDTO) => {
-      const response = await axios.post(
-        `${environment.apiUrl}/employees`,
-        dto,
-      );
+      const response = await axios.post(`${environment.apiUrl}/employees`, dto);
       return await response.data();
     },
     onSuccess: () => {

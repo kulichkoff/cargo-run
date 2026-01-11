@@ -8,10 +8,7 @@ export function useCreateVehicleMutation() {
 
   return useMutation({
     mutationFn: async (dto: CreateVehicleDTO) => {
-      const response = await axios.post(
-        `${environment.apiUrl}/vehicles`,
-        dto,
-      );
+      const response = await axios.post(`${environment.apiUrl}/vehicles`, dto);
       return await response.data();
     },
     onSuccess: () => {
