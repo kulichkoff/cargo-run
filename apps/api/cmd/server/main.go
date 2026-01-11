@@ -11,7 +11,6 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
-	"github.com/go-chi/jwtauth/v5"
 )
 
 func main() {
@@ -44,7 +43,7 @@ func main() {
 	})
 
 	r.Group(func(r chi.Router) {
-		r.Use(jwtauth.Verifier(jwtToken))
+		r.Use(auth.Verifier(jwtToken))
 		r.Use(auth.JWTAuthenticator(jwtToken))
 
 		r.Route("/employees", employees.Router)

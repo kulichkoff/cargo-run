@@ -19,7 +19,6 @@ func JWTAuthenticator(ja *jwtauth.JWTAuth) func(http.Handler) http.Handler {
 
 			// Check expiration
 			expiresAtUnix := int64(claims["expiresAt"].(float64))
-			// expiresAtUnix, _ := strconv.ParseInt(claims["expiresAt"].(string), 10, 64)
 			expiresAt := time.Unix(expiresAtUnix, 0)
 			if expiresAt.Before(time.Now()) {
 				http.Error(w, "expired", http.StatusUnauthorized)

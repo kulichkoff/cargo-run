@@ -7,7 +7,11 @@ import (
 	"github.com/go-chi/jwtauth/v5"
 )
 
-const expireOffset = time.Hour * 2
+const (
+	expireOffset           = time.Hour * 2
+	accessTokenCookieName  = "cgr-access"
+	refreshTokenCookieName = "cgr-refresh"
+)
 
 var tokenAuth *jwtauth.JWTAuth
 

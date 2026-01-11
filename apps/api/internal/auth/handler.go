@@ -24,6 +24,13 @@ func (h *HTTPHandler) HandleLogin(w http.ResponseWriter, r *http.Request) {
 	// TODO chamge password, use it from env variables temporary
 	if credentials.UserName == "admin" && credentials.Password == "topsecret" {
 		accessToken := MakeToken(&users.User{UserName: credentials.UserName})
+		http.SetCookie(w, &http.Cookie{
+			Name:     accessTokenCookieName,
+			Value:    accessToken,
+			Path:     "/",
+			HttpOnly: true,
+			SameSite: http.SameSiteLaxMode,
+		})
 		render.JSON(w, r, map[string]interface{}{
 			"accessToken": accessToken,
 		})
