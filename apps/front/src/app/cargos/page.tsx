@@ -10,9 +10,9 @@ import { redirect } from 'next/navigation';
 export default async function CargosPage() {
   const queryClient = getQueryClient();
   try {
-    await queryClient.prefetchQuery(employeesQueryOptions);
-    await queryClient.prefetchQuery(vehiclesQueryOptions);
-    await queryClient.prefetchQuery(cargosQueryOptions);
+    await queryClient.fetchQuery(employeesQueryOptions);
+    await queryClient.fetchQuery(vehiclesQueryOptions);
+    await queryClient.fetchQuery(cargosQueryOptions);
   } catch (error) {
     if ((error as AxiosError).status === 401) {
       redirect('/login');

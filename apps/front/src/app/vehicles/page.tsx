@@ -9,7 +9,7 @@ export default async function VehiclesPage() {
   const queryClient = getQueryClient();
 
   try {
-    await queryClient.prefetchQuery(vehiclesQueryOptions);
+    await queryClient.fetchQuery(vehiclesQueryOptions);
   } catch (error) {
     if ((error as AxiosError).status === 401) {
       redirect('/login');

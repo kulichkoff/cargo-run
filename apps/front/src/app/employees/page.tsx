@@ -8,7 +8,7 @@ import { redirect } from 'next/navigation';
 export default async function EmployeesPage() {
   const queryClient = getQueryClient();
   try {
-    await queryClient.prefetchQuery(employeesQueryOptions);
+    await queryClient.fetchQuery(employeesQueryOptions);
   } catch (error) {
     if ((error as AxiosError).status === 401) {
       redirect('/login');
