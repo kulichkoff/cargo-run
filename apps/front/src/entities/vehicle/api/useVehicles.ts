@@ -5,11 +5,11 @@ import {
 } from '@tanstack/react-query';
 import { environment } from '@/env';
 import { VehicleModel } from '../model';
+import axios from 'axios';
 
 export const fetchVehicles = async (): Promise<VehicleModel[]> => {
-  const response = await fetch(`${environment.apiUrl}/vehicles`);
-  const data = await response.json();
-  return data;
+  const respose = await axios.get(`${environment.apiUrl}/vehicles`);
+  return respose.data;
 };
 
 export const vehiclesQueryOptions = queryOptions({

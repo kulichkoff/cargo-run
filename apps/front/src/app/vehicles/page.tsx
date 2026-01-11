@@ -2,11 +2,19 @@ import { vehiclesQueryOptions } from '@/entities/vehicle';
 import { getQueryClient } from '@/shared/lib';
 import { VehiclesDataTable } from '@/widgets/vehicles-data-table';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import { redirect } from 'next/navigation';
 
-export default function VehiclesPage() {
+export default async function VehiclesPage() {
   const queryClient = getQueryClient();
 
-  void queryClient.prefetchQuery(vehiclesQueryOptions);
+  try {
+    await queryClient.prefetchQuery(vehiclesQueryOptions);
+  } catch (error) {
+    if ((error as AxiosError).status === 401) {
+      redirect('/login');
+    }
+  }
 
   return (
     <div>

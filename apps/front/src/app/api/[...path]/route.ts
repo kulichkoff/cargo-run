@@ -41,7 +41,7 @@ async function proxy(req: NextRequest, path: string[]) {
     body: req.method === 'GET' ? undefined : await req.text(),
   });
 
-  // 🔁 If access token expired, attempt refresh
+  // If access token expired, attempt refresh
   if (res.status === 401) {
     const refreshed = await refreshToken(req);
     if (!refreshed) {
