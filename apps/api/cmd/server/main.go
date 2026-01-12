@@ -4,6 +4,7 @@ import (
 	"cargorun/internal/auth"
 	"cargorun/internal/cargos"
 	"cargorun/internal/config"
+	"cargorun/internal/customers"
 	"cargorun/internal/employees"
 	"cargorun/internal/vehicles"
 	"net/http"
@@ -49,6 +50,7 @@ func main() {
 		r.Route("/employees", employees.Router)
 		r.Route("/vehicles", vehicles.Router)
 		r.Route("/cargos", cargos.Router)
+		r.Route("/customers", customers.Router)
 	})
 
 	println("Server started on http://localhost:3333")
