@@ -19,7 +19,7 @@ INSERT INTO cargos (
     deadline_date,
     price
 ) VALUES ($1, $2, $3, $4, $5, $6)
-RETURNING id, address_sequence, employee_id, vehicle_id, start_date, deadline_date, price, payment_status, created_at, updated_at
+RETURNING id, address_sequence, employee_id, vehicle_id, start_date, deadline_date, price, payment_status, created_at, updated_at, customer_id
 `
 
 type CreateCargoParams struct {
@@ -52,12 +52,13 @@ func (q *Queries) CreateCargo(ctx context.Context, arg CreateCargoParams) (Cargo
 		&i.PaymentStatus,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.CustomerID,
 	)
 	return i, err
 }
 
 const getCargo = `-- name: GetCargo :one
-SELECT id, address_sequence, employee_id, vehicle_id, start_date, deadline_date, price, payment_status, created_at, updated_at FROM cargos
+SELECT id, address_sequence, employee_id, vehicle_id, start_date, deadline_date, price, payment_status, created_at, updated_at, customer_id FROM cargos
 WHERE id = $1
 `
 
@@ -75,12 +76,13 @@ func (q *Queries) GetCargo(ctx context.Context, id int64) (Cargo, error) {
 		&i.PaymentStatus,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.CustomerID,
 	)
 	return i, err
 }
 
 const listCargos = `-- name: ListCargos :many
-SELECT id, address_sequence, employee_id, vehicle_id, start_date, deadline_date, price, payment_status, created_at, updated_at FROM cargos
+SELECT id, address_sequence, employee_id, vehicle_id, start_date, deadline_date, price, payment_status, created_at, updated_at, customer_id FROM cargos
 ORDER BY created_at
 LIMIT $1 OFFSET $2
 `
@@ -110,6 +112,7 @@ func (q *Queries) ListCargos(ctx context.Context, arg ListCargosParams) ([]Cargo
 			&i.PaymentStatus,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.CustomerID,
 		); err != nil {
 			return nil, err
 		}
@@ -135,11 +138,17 @@ SELECT
     v.id as vehicle_id,
     v.plate_number as vehicle_plate_number,
     v.make as vehicle_make,
+    cu.company_type as customer_company_type,
+    cu.company_name as customer_company_name,
+    cu.inn as customer_inn,
+    cu.kpp as customer_kpp,
+    cu.ogrn as customer_ogrn,
     c.created_at,
     c.updated_at
 FROM cargos c
 JOIN employees e ON e.id = c.employee_id
 JOIN vehicles v ON v.id = c.vehicle_id
+JOIN customers cu ON cu.id = c.customer_id
 ORDER BY c.created_at
 LIMIT $1 OFFSET $2
 `
@@ -150,20 +159,25 @@ type ListCargosDetailedParams struct {
 }
 
 type ListCargosDetailedRow struct {
-	ID                 int64     `json:"id"`
-	AddressSequence    []string  `json:"addressSequence"`
-	StartDate          time.Time `json:"startDate"`
-	DeadlineDate       time.Time `json:"deadlineDate"`
-	Price              float64   `json:"price"`
-	PaymentStatus      int32     `json:"paymentStatus"`
-	EmployeeID         int64     `json:"employeeId"`
-	EmployeeFirstName  string    `json:"employeeFirstName"`
-	EmployeeLastName   string    `json:"employeeLastName"`
-	VehicleID          int64     `json:"vehicleId"`
-	VehiclePlateNumber string    `json:"vehiclePlateNumber"`
-	VehicleMake        *string   `json:"vehicleMake"`
-	CreatedAt          time.Time `json:"createdAt"`
-	UpdatedAt          time.Time `json:"updatedAt"`
+	ID                  int64     `json:"id"`
+	AddressSequence     []string  `json:"addressSequence"`
+	StartDate           time.Time `json:"startDate"`
+	DeadlineDate        time.Time `json:"deadlineDate"`
+	Price               float64   `json:"price"`
+	PaymentStatus       int32     `json:"paymentStatus"`
+	EmployeeID          int64     `json:"employeeId"`
+	EmployeeFirstName   string    `json:"employeeFirstName"`
+	EmployeeLastName    string    `json:"employeeLastName"`
+	VehicleID           int64     `json:"vehicleId"`
+	VehiclePlateNumber  string    `json:"vehiclePlateNumber"`
+	VehicleMake         *string   `json:"vehicleMake"`
+	CustomerCompanyType string    `json:"customerCompanyType"`
+	CustomerCompanyName string    `json:"customerCompanyName"`
+	CustomerInn         string    `json:"customerInn"`
+	CustomerKpp         string    `json:"customerKpp"`
+	CustomerOgrn        string    `json:"customerOgrn"`
+	CreatedAt           time.Time `json:"createdAt"`
+	UpdatedAt           time.Time `json:"updatedAt"`
 }
 
 func (q *Queries) ListCargosDetailed(ctx context.Context, arg ListCargosDetailedParams) ([]ListCargosDetailedRow, error) {
@@ -188,6 +202,11 @@ func (q *Queries) ListCargosDetailed(ctx context.Context, arg ListCargosDetailed
 			&i.VehicleID,
 			&i.VehiclePlateNumber,
 			&i.VehicleMake,
+			&i.CustomerCompanyType,
+			&i.CustomerCompanyName,
+			&i.CustomerInn,
+			&i.CustomerKpp,
+			&i.CustomerOgrn,
 			&i.CreatedAt,
 			&i.UpdatedAt,
 		); err != nil {
@@ -213,7 +232,7 @@ SET
     payment_status = COALESCE($8, payment_status),
     updated_at = now()
 WHERE id = $1
-RETURNING id, address_sequence, employee_id, vehicle_id, start_date, deadline_date, price, payment_status, created_at, updated_at
+RETURNING id, address_sequence, employee_id, vehicle_id, start_date, deadline_date, price, payment_status, created_at, updated_at, customer_id
 `
 
 type UpdateCargoParams struct {
@@ -250,6 +269,7 @@ func (q *Queries) UpdateCargo(ctx context.Context, arg UpdateCargoParams) (Cargo
 		&i.PaymentStatus,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.CustomerID,
 	)
 	return i, err
 }

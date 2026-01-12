@@ -10,6 +10,7 @@ import (
 
 type Querier interface {
 	CreateCargo(ctx context.Context, arg CreateCargoParams) (Cargo, error)
+	CreateCustomer(ctx context.Context, arg CreateCustomerParams) (Customer, error)
 	CreateEmployee(ctx context.Context, arg CreateEmployeeParams) (Employee, error)
 	// Inserts a new vehicle and returns the created result
 	CreateVehicle(ctx context.Context, arg CreateVehicleParams) (Vehicle, error)
@@ -19,6 +20,7 @@ type Querier interface {
 	GetVehicle(ctx context.Context, id int64) (Vehicle, error)
 	ListCargos(ctx context.Context, arg ListCargosParams) ([]Cargo, error)
 	ListCargosDetailed(ctx context.Context, arg ListCargosDetailedParams) ([]ListCargosDetailedRow, error)
+	ListCustomers(ctx context.Context, arg ListCustomersParams) ([]Customer, error)
 	ListEmployees(ctx context.Context, arg ListEmployeesParams) ([]Employee, error)
 	// Retrieves all vehicles ordered by plate number with pagination
 	ListVehicles(ctx context.Context, arg ListVehiclesParams) ([]Vehicle, error)

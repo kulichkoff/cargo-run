@@ -32,11 +32,17 @@ SELECT
     v.id as vehicle_id,
     v.plate_number as vehicle_plate_number,
     v.make as vehicle_make,
+    cu.company_type as customer_company_type,
+    cu.company_name as customer_company_name,
+    cu.inn as customer_inn,
+    cu.kpp as customer_kpp,
+    cu.ogrn as customer_ogrn,
     c.created_at,
     c.updated_at
 FROM cargos c
 JOIN employees e ON e.id = c.employee_id
 JOIN vehicles v ON v.id = c.vehicle_id
+JOIN customers cu ON cu.id = c.customer_id
 ORDER BY c.created_at
 LIMIT $1 OFFSET $2;
 

@@ -19,6 +19,18 @@ type Cargo struct {
 	PaymentStatus   int32     `json:"paymentStatus"`
 	CreatedAt       time.Time `json:"createdAt"`
 	UpdatedAt       time.Time `json:"updatedAt"`
+	CustomerID      int64     `json:"customerId"`
+}
+
+type Customer struct {
+	ID          int64     `json:"id"`
+	CompanyName string    `json:"companyName"`
+	CompanyType string    `json:"companyType"`
+	Inn         string    `json:"inn"`
+	Kpp         string    `json:"kpp"`
+	Ogrn        string    `json:"ogrn"`
+	CreatedAt   time.Time `json:"createdAt"`
+	UpdatedAt   time.Time `json:"updatedAt"`
 }
 
 type Employee struct {
