@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Home, Package, Truck, User } from 'lucide-react';
+import { BriefcaseBusiness, Home, Package, Truck, User } from 'lucide-react';
 import {
   Sidebar,
   SidebarHeader,
@@ -20,6 +20,16 @@ const routes = [
     icon: Home,
   },
   {
+    title: 'Перевозки',
+    url: '/cargos',
+    icon: Package,
+  },
+  {
+    title: 'Клиенты',
+    url: '/customers',
+    icon: BriefcaseBusiness,
+  },
+  {
     title: 'Сотрудники',
     url: '/employees',
     icon: User,
@@ -28,11 +38,6 @@ const routes = [
     title: 'Транспорт',
     url: '/vehicles',
     icon: Truck,
-  },
-  {
-    title: 'Перевозки',
-    url: '/cargos',
-    icon: Package,
   },
 ];
 
