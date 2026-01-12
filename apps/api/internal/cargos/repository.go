@@ -2,6 +2,7 @@ package cargos
 
 import (
 	"cargorun/db/sqlc"
+	"cargorun/internal/customers"
 	"context"
 )
 
@@ -80,8 +81,16 @@ func (r *CargosRepository) ListDetailed(ctx context.Context) ([]*CargoDetailed, 
 			},
 			Vehicle: map[string]interface{}{
 				"id":          row.VehicleID,
-				"make":       row.VehicleMake,
+				"make":        row.VehicleMake,
 				"plateNumber": row.VehiclePlateNumber,
+			},
+			Customer: customers.CustomerModel{
+				ID:          row.CustomerID,
+				CompanyName: row.CustomerCompanyName,
+				CompanyType: row.CustomerCompanyType,
+				Inn:         row.CustomerInn,
+				Kpp:         row.CustomerKpp,
+				Ogrn:        row.CustomerOgrn,
 			},
 			StartDate:     row.StartDate,
 			DeadlineDate:  row.DeadlineDate,

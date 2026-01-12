@@ -138,6 +138,7 @@ SELECT
     v.id as vehicle_id,
     v.plate_number as vehicle_plate_number,
     v.make as vehicle_make,
+    cu.id as customer_id,
     cu.company_type as customer_company_type,
     cu.company_name as customer_company_name,
     cu.inn as customer_inn,
@@ -171,6 +172,7 @@ type ListCargosDetailedRow struct {
 	VehicleID           int64     `json:"vehicleId"`
 	VehiclePlateNumber  string    `json:"vehiclePlateNumber"`
 	VehicleMake         *string   `json:"vehicleMake"`
+	CustomerID          int64     `json:"customerId"`
 	CustomerCompanyType string    `json:"customerCompanyType"`
 	CustomerCompanyName string    `json:"customerCompanyName"`
 	CustomerInn         string    `json:"customerInn"`
@@ -202,6 +204,7 @@ func (q *Queries) ListCargosDetailed(ctx context.Context, arg ListCargosDetailed
 			&i.VehicleID,
 			&i.VehiclePlateNumber,
 			&i.VehicleMake,
+			&i.CustomerID,
 			&i.CustomerCompanyType,
 			&i.CustomerCompanyName,
 			&i.CustomerInn,

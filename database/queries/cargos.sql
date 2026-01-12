@@ -32,6 +32,7 @@ SELECT
     v.id as vehicle_id,
     v.plate_number as vehicle_plate_number,
     v.make as vehicle_make,
+    cu.id as customer_id,
     cu.company_type as customer_company_type,
     cu.company_name as customer_company_name,
     cu.inn as customer_inn,
