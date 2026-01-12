@@ -30,6 +30,12 @@ func (h *HTTPHandler) HandleCreate(w http.ResponseWriter, r *http.Request) {
 		render.Render(w, r, httperr.ErrInvalidRequest(err))
 		return
 	}
+
+	// Validate
+	if CustomerType(dto.CompanyType) == CustomerTypeIndividual {
+		dto.Kpp = ""
+	}
+
 	ctx := r.Context()
 	customer, err := h.repo.Create(ctx, dto)
 	if err != nil {
