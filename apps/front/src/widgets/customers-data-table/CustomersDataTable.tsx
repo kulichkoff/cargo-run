@@ -1,0 +1,35 @@
+'use client';
+
+import { Button } from '@/components/ui/button';
+import { DialogTrigger } from '@/components/ui/dialog';
+import { customersQueryOptions } from '@/entities/customer';
+import { customersColumns } from '@/entities/customer/model/customer.columns';
+import { CreateCustomerDialog } from '@/features/create-customer';
+import { DataTable } from '@/shared/ui';
+import { useQuery } from '@tanstack/react-query';
+import { Plus } from 'lucide-react';
+
+export function CustomersDataTable() {
+  const customersQuery = useQuery(customersQueryOptions);
+
+  return (
+    <div>
+      <CreateCustomerDialog>
+        <div className="pb-3 flex flex-row w-full gap-3 items-center justify-end">
+          <DialogTrigger asChild>
+            <Button size="sm">
+              <Plus />
+              Добавить
+            </Button>
+          </DialogTrigger>
+        </div>
+      </CreateCustomerDialog>
+      <div className="overflow-x-scroll sm:max-w-70 lg:max-w-full">
+        <DataTable
+          columns={customersColumns}
+          data={customersQuery.data ?? []}
+        />
+      </div>
+    </div>
+  );
+}

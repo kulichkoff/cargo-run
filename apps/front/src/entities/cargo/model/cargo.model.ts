@@ -1,3 +1,4 @@
+import { CustomerModel } from '@/entities/customer';
 import { EmployeeModel } from '@/entities/employee';
 import { PaymentStatus } from '@/entities/payment';
 import { VehicleModel } from '@/entities/vehicle';
@@ -20,4 +21,5 @@ export interface CargoModel {
 export interface CargoDetailed extends CargoModel {
   employee: EmployeeModel;
   vehicle: VehicleModel;
+  customer: CustomerModel;
 }
