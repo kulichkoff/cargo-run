@@ -14,6 +14,7 @@ import (
 type cargosRepo interface {
 	Create(ctx context.Context, dto *createCargoDTO) (*CargoModel, error)
 	List(ctx context.Context) ([]*CargoModel, error)
+	ListDetailed(ctx context.Context) ([]*CargoDetailed, error)
 	Get(ctx context.Context, id int64) (*CargoModel, error)
 	Update(ctx context.Context, id int64, dto *updateCargoDTO) (*CargoModel, error)
 }
@@ -40,7 +41,7 @@ func (h *CargosHandler) HandleCreate(w http.ResponseWriter, r *http.Request) {
 
 func (h *CargosHandler) HandleList(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	cargosList, err := h.repository.List(ctx)
+	cargosList, err := h.repository.ListDetailed(ctx)
 	if err != nil {
 		render.Render(w, r, httperr.ErrInternalServerError(err))
 		return

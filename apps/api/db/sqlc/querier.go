@@ -18,6 +18,7 @@ type Querier interface {
 	// Retrieves a single vehicle by ID
 	GetVehicle(ctx context.Context, id int64) (Vehicle, error)
 	ListCargos(ctx context.Context, arg ListCargosParams) ([]Cargo, error)
+	ListCargosDetailed(ctx context.Context, arg ListCargosDetailedParams) ([]ListCargosDetailedRow, error)
 	ListEmployees(ctx context.Context, arg ListEmployeesParams) ([]Employee, error)
 	// Retrieves all vehicles ordered by plate number with pagination
 	ListVehicles(ctx context.Context, arg ListVehiclesParams) ([]Vehicle, error)

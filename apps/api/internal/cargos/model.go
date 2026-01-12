@@ -14,3 +14,16 @@ type CargoModel struct {
 	CreatedAt       time.Time `json:"createdAt"`
 	UpdatedAt       time.Time `json:"updatedAt"`
 }
+
+type CargoDetailed struct {
+	ID              int64                  `json:"id"`
+	AddressSequence []string               `json:"addressSequence"`
+	Employee        map[string]interface{} `json:"employee"`
+	Vehicle         map[string]interface{} `json:"vehicle"`
+	StartDate       time.Time              `json:"startDate"`
+	DeadlineDate    time.Time              `json:"deadlineDate"`
+	Price           float64                `json:"price"`
+	PaymentStatus   int32                  `json:"paymentStatus"`
+	CreatedAt       time.Time              `json:"createdAt"`
+	UpdatedAt       time.Time              `json:"updatedAt"`
+}

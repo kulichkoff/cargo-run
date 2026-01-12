@@ -58,7 +58,40 @@ func (r *CargosRepository) List(ctx context.Context) ([]*CargoModel, error) {
 		cargos[i] = r.mapCargoRow(row)
 	}
 	return cargos, err
+}
 
+func (r *CargosRepository) ListDetailed(ctx context.Context) ([]*CargoDetailed, error) {
+	rows, err := r.querier.ListCargosDetailed(ctx, sqlc.ListCargosDetailedParams{
+		Limit:  100,
+		Offset: 0,
+	})
+	if err != nil {
+		return nil, err
+	}
+	cargos := make([]*CargoDetailed, len(rows))
+	for i, row := range rows {
+		cargos[i] = &CargoDetailed{
+			ID:              row.ID,
+			AddressSequence: row.AddressSequence,
+			Employee: map[string]interface{}{
+				"id":        row.EmployeeID,
+				"firstName": row.EmployeeFirstName,
+				"lastName":  row.EmployeeLastName,
+			},
+			Vehicle: map[string]interface{}{
+				"id":          row.VehicleID,
+				"make":       row.VehicleMake,
+				"plateNumber": row.VehiclePlateNumber,
+			},
+			StartDate:     row.StartDate,
+			DeadlineDate:  row.DeadlineDate,
+			Price:         row.Price,
+			PaymentStatus: row.PaymentStatus,
+			CreatedAt:     row.CreatedAt,
+			UpdatedAt:     row.UpdatedAt,
+		}
+	}
+	return cargos, nil
 }
 
 func (r *CargosRepository) Get(ctx context.Context, id int64) (*CargoModel, error) {

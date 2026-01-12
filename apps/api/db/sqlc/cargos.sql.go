@@ -121,6 +121,86 @@ func (q *Queries) ListCargos(ctx context.Context, arg ListCargosParams) ([]Cargo
 	return items, nil
 }
 
+const listCargosDetailed = `-- name: ListCargosDetailed :many
+SELECT
+    c.id,
+    c.address_sequence,
+    c.start_date,
+    c.deadline_date,
+    c.price,
+    c.payment_status,
+    e.id as employee_id,
+    e.first_name as employee_first_name,
+    e.last_name as employee_last_name,
+    v.id as vehicle_id,
+    v.plate_number as vehicle_plate_number,
+    v.make as vehicle_make,
+    c.created_at,
+    c.updated_at
+FROM cargos c
+JOIN employees e ON e.id = c.employee_id
+JOIN vehicles v ON v.id = c.vehicle_id
+ORDER BY c.created_at
+LIMIT $1 OFFSET $2
+`
+
+type ListCargosDetailedParams struct {
+	Limit  int32 `json:"limit"`
+	Offset int32 `json:"offset"`
+}
+
+type ListCargosDetailedRow struct {
+	ID                 int64     `json:"id"`
+	AddressSequence    []string  `json:"addressSequence"`
+	StartDate          time.Time `json:"startDate"`
+	DeadlineDate       time.Time `json:"deadlineDate"`
+	Price              float64   `json:"price"`
+	PaymentStatus      int32     `json:"paymentStatus"`
+	EmployeeID         int64     `json:"employeeId"`
+	EmployeeFirstName  string    `json:"employeeFirstName"`
+	EmployeeLastName   string    `json:"employeeLastName"`
+	VehicleID          int64     `json:"vehicleId"`
+	VehiclePlateNumber string    `json:"vehiclePlateNumber"`
+	VehicleMake        *string   `json:"vehicleMake"`
+	CreatedAt          time.Time `json:"createdAt"`
+	UpdatedAt          time.Time `json:"updatedAt"`
+}
+
+func (q *Queries) ListCargosDetailed(ctx context.Context, arg ListCargosDetailedParams) ([]ListCargosDetailedRow, error) {
+	rows, err := q.db.Query(ctx, listCargosDetailed, arg.Limit, arg.Offset)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ListCargosDetailedRow{}
+	for rows.Next() {
+		var i ListCargosDetailedRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.AddressSequence,
+			&i.StartDate,
+			&i.DeadlineDate,
+			&i.Price,
+			&i.PaymentStatus,
+			&i.EmployeeID,
+			&i.EmployeeFirstName,
+			&i.EmployeeLastName,
+			&i.VehicleID,
+			&i.VehiclePlateNumber,
+			&i.VehicleMake,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const updateCargo = `-- name: UpdateCargo :one
 UPDATE cargos
 SET
