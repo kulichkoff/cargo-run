@@ -5,8 +5,9 @@ INSERT INTO cargos (
     vehicle_id,
     start_date,
     deadline_date,
-    price
-) VALUES ($1, $2, $3, $4, $5, $6)
+    price,
+    customer_id
+) VALUES ($1, $2, $3, $4, $5, $6, $7)
 RETURNING *;
 
 -- name: GetCargo :one
@@ -53,6 +54,7 @@ SET
     address_sequence = COALESCE(sqlc.narg(address_sequence), address_sequence),
     employee_id = COALESCE(sqlc.narg(employee_id), employee_id),
     vehicle_id = COALESCE(sqlc.narg(vehicle_id), vehicle_id),
+    customer_id = COALESCE(sqlc.narg(customer_id), customer_id),
     start_date = COALESCE(sqlc.narg(start_date), start_date),
     deadline_date = COALESCE(sqlc.narg(deadline_date), deadline_date),
     price = COALESCE(sqlc.narg(price), price),

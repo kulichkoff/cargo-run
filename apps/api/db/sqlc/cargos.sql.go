@@ -17,8 +17,9 @@ INSERT INTO cargos (
     vehicle_id,
     start_date,
     deadline_date,
-    price
-) VALUES ($1, $2, $3, $4, $5, $6)
+    price,
+    customer_id
+) VALUES ($1, $2, $3, $4, $5, $6, $7)
 RETURNING id, address_sequence, employee_id, vehicle_id, start_date, deadline_date, price, payment_status, created_at, updated_at, customer_id
 `
 
@@ -29,6 +30,7 @@ type CreateCargoParams struct {
 	StartDate       time.Time `json:"startDate"`
 	DeadlineDate    time.Time `json:"deadlineDate"`
 	Price           float64   `json:"price"`
+	CustomerID      int64     `json:"customerId"`
 }
 
 func (q *Queries) CreateCargo(ctx context.Context, arg CreateCargoParams) (Cargo, error) {
@@ -39,6 +41,7 @@ func (q *Queries) CreateCargo(ctx context.Context, arg CreateCargoParams) (Cargo
 		arg.StartDate,
 		arg.DeadlineDate,
 		arg.Price,
+		arg.CustomerID,
 	)
 	var i Cargo
 	err := row.Scan(
@@ -229,10 +232,11 @@ SET
     address_sequence = COALESCE($2, address_sequence),
     employee_id = COALESCE($3, employee_id),
     vehicle_id = COALESCE($4, vehicle_id),
-    start_date = COALESCE($5, start_date),
-    deadline_date = COALESCE($6, deadline_date),
-    price = COALESCE($7, price),
-    payment_status = COALESCE($8, payment_status),
+    customer_id = COALESCE($5, customer_id),
+    start_date = COALESCE($6, start_date),
+    deadline_date = COALESCE($7, deadline_date),
+    price = COALESCE($8, price),
+    payment_status = COALESCE($9, payment_status),
     updated_at = now()
 WHERE id = $1
 RETURNING id, address_sequence, employee_id, vehicle_id, start_date, deadline_date, price, payment_status, created_at, updated_at, customer_id
@@ -243,6 +247,7 @@ type UpdateCargoParams struct {
 	AddressSequence []string   `json:"addressSequence"`
 	EmployeeID      *int64     `json:"employeeId"`
 	VehicleID       *int64     `json:"vehicleId"`
+	CustomerID      *int64     `json:"customerId"`
 	StartDate       *time.Time `json:"startDate"`
 	DeadlineDate    *time.Time `json:"deadlineDate"`
 	Price           *float64   `json:"price"`
@@ -255,6 +260,7 @@ func (q *Queries) UpdateCargo(ctx context.Context, arg UpdateCargoParams) (Cargo
 		arg.AddressSequence,
 		arg.EmployeeID,
 		arg.VehicleID,
+		arg.CustomerID,
 		arg.StartDate,
 		arg.DeadlineDate,
 		arg.Price,

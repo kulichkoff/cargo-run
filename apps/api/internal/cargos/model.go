@@ -9,6 +9,7 @@ type CargoModel struct {
 	ID              int64     `json:"id"`
 	AddressSequence []string  `json:"addressSequence"`
 	EmployeeID      int64     `json:"employeeId"`
+	CustomerID      int64     `json:"customerId"`
 	VehicleID       int64     `json:"vehicleId"`
 	StartDate       time.Time `json:"startDate"`
 	DeadlineDate    time.Time `json:"deadlineDate"`

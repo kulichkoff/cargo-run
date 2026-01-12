@@ -12,6 +12,7 @@ export interface CargoModel {
   addressSequence: string[];
   employeeId: number;
   vehicleId: number;
+  customerId: number;
   startDate: Date;
   deadlineDate: Date;
   price: number;

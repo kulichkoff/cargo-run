@@ -8,6 +8,7 @@ export const useCreateCargoForm = () =>
     defaultValues: {
       employeeId: '',
       vehicleId: '',
+      customerId: '',
       addressSequence: '',
       price: '',
     },

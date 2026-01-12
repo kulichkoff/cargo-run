@@ -39,6 +39,11 @@ import { CalendarIcon } from 'lucide-react';
 import { Calendar } from '@/components/ui/calendar';
 import { PaymentStatus } from '@/entities/payment';
 import { useCreateCargoMut } from '../api';
+import { useQuery } from '@tanstack/react-query';
+import {
+  customersQueryOptions,
+  getCustomerTypeLocale,
+} from '@/entities/customer';
 
 export type CreateCargoDialogProps = React.PropsWithChildren;
 
@@ -53,6 +58,9 @@ export function CreateCargoDialog({ children }: CreateCargoDialogProps) {
 
   const { data: employees, isPending: employeesPending } = useEmployees();
   const { data: vehicles, isPending: vehiclesPending } = useVehicles();
+  const { data: customers, isPending: customersPending } = useQuery(
+    customersQueryOptions,
+  );
 
   const form = useCreateCargoForm();
   const onSubmit: SubmitHandler<CreateCargoFormData> = (data) => {
@@ -61,6 +69,7 @@ export function CreateCargoDialog({ children }: CreateCargoDialogProps) {
       addressSequence: parseRoute(addressSequenceValue),
       vehicleId: +data.vehicleId,
       employeeId: +data.employeeId,
+      customerId: +data.customerId,
       paymentStatus: PaymentStatus.Pending,
       price: parseFloat(data.price),
     };
@@ -119,6 +128,40 @@ export function CreateCargoDialog({ children }: CreateCargoDialogProps) {
                   <FormControl>
                     <Input type="number" placeholder="1234567.89" {...field} />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="customerId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Заказчик<span className="text-red-500">*</span>
+                  </FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    disabled={field.disabled || customersPending}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="ООО Рога и копыта" />
+                      </SelectTrigger>
+                    </FormControl>
+                    {!customersPending && (
+                      <SelectContent>
+                        {customers!.map((customer) => (
+                          <SelectItem
+                            key={customer.id}
+                            value={customer.id.toString()}
+                          >{`${getCustomerTypeLocale(customer.companyType)} ${customer.companyName}`}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    )}
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

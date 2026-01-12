@@ -7,6 +7,7 @@ export const createCargoSchema = z.object({
   deadlineDate: z.date(),
   price: z.string(),
   addressSequence: z.string(),
+  customerId: z.string(),
 });
 
 export type CreateCargoFormData = z.infer<typeof createCargoSchema>;

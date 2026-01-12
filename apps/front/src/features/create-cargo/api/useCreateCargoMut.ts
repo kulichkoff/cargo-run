@@ -8,7 +8,7 @@ export function useCreateCargoMut() {
   return useMutation({
     mutationFn: async (dto: CreateCargoDTO) => {
       const response = await axios.post(`${environment.apiUrl}/cargos`, dto);
-      return await response.data();
+      return await response.data;
     },
     onSuccess: () => {
       // TODO probably, insert a new one is a better idea

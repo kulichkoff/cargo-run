@@ -21,6 +21,7 @@ func (r *CargosRepository) mapCargoRow(dto sqlc.Cargo) *CargoModel {
 		ID:              dto.ID,
 		AddressSequence: dto.AddressSequence,
 		EmployeeID:      dto.EmployeeID,
+		CustomerID:      dto.CustomerID,
 		VehicleID:       dto.VehicleID,
 		StartDate:       dto.StartDate,
 		DeadlineDate:    dto.DeadlineDate,
@@ -35,6 +36,7 @@ func (r *CargosRepository) Create(ctx context.Context, dto *createCargoDTO) (*Ca
 	row, err := r.querier.CreateCargo(ctx, sqlc.CreateCargoParams{
 		AddressSequence: dto.AddressSequence,
 		EmployeeID:      dto.EmployeeID,
+		CustomerID:      dto.CustomerID,
 		VehicleID:       dto.VehicleID,
 		StartDate:       dto.StartDate,
 		DeadlineDate:    dto.DeadlineDate,
