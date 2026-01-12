@@ -4,12 +4,12 @@ import {
   useQuery,
   useSuspenseQuery,
 } from '@tanstack/react-query';
-import { CargoModel } from '../model';
+import { CargoDetailed, CargoModel } from '../model';
 import axios from 'axios';
 
-const fetchCargos = async (): Promise<CargoModel[]> => {
+const fetchCargos = async (): Promise<CargoDetailed[]> => {
   const response = await axios.get(`${environment.apiUrl}/cargos`);
-  const data: CargoModel[] = response.data;
+  const data: CargoDetailed[] = response.data;
   return data.map((cargo) => ({
     ...cargo,
     deadlineDate: new Date(cargo.deadlineDate),
