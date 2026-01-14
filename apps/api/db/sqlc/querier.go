@@ -12,6 +12,7 @@ type Querier interface {
 	CreateCargo(ctx context.Context, arg CreateCargoParams) (Cargo, error)
 	CreateCustomer(ctx context.Context, arg CreateCustomerParams) (Customer, error)
 	CreateEmployee(ctx context.Context, arg CreateEmployeeParams) (Employee, error)
+	CreateFinancialTransaction(ctx context.Context, arg CreateFinancialTransactionParams) (FinancialTransaction, error)
 	// Inserts a new vehicle and returns the created result
 	CreateVehicle(ctx context.Context, arg CreateVehicleParams) (Vehicle, error)
 	GetCargo(ctx context.Context, id int64) (Cargo, error)
@@ -26,6 +27,7 @@ type Querier interface {
 	ListVehicles(ctx context.Context, arg ListVehiclesParams) ([]Vehicle, error)
 	UpdateCargo(ctx context.Context, arg UpdateCargoParams) (Cargo, error)
 	UpdateEmployee(ctx context.Context, arg UpdateEmployeeParams) (Employee, error)
+	UpdateFinancialTransaction(ctx context.Context, arg UpdateFinancialTransactionParams) (FinancialTransaction, error)
 	// Updates a vehicle's information and returns the updated record
 	UpdateVehicle(ctx context.Context, arg UpdateVehicleParams) (Vehicle, error)
 }

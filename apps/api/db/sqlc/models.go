@@ -41,6 +41,18 @@ type Employee struct {
 	UpdatedAt time.Time `json:"updatedAt"`
 }
 
+type FinancialTransaction struct {
+	ID              int64     `json:"id"`
+	Amount          float64   `json:"amount"`
+	Currency        *string   `json:"currency"`
+	CargoID         int64     `json:"cargoId"`
+	Type            string    `json:"type"`
+	Status          string    `json:"status"`
+	TransactionDate time.Time `json:"transactionDate"`
+	CreatedAt       time.Time `json:"createdAt"`
+	UpdatedAt       time.Time `json:"updatedAt"`
+}
+
 type Vehicle struct {
 	ID              int64     `json:"id"`
 	PlateNumber     string    `json:"plateNumber"`
