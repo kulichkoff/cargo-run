@@ -16,9 +16,10 @@ INSERT INTO financial_transactions (
     cargo_id,
     type,
     status,
-    transaction_date
-) VALUES ($1, $2, $3, $4, $5)
-RETURNING id, amount, currency, cargo_id, type, status, transaction_date, created_at, updated_at
+    transaction_date,
+    description
+) VALUES ($1, $2, $3, $4, $5, $6)
+RETURNING id, amount, currency, cargo_id, type, status, transaction_date, created_at, updated_at, description
 `
 
 type CreateFinancialTransactionParams struct {
@@ -27,6 +28,7 @@ type CreateFinancialTransactionParams struct {
 	Type            string    `json:"type"`
 	Status          string    `json:"status"`
 	TransactionDate time.Time `json:"transactionDate"`
+	Description     *string   `json:"description"`
 }
 
 func (q *Queries) CreateFinancialTransaction(ctx context.Context, arg CreateFinancialTransactionParams) (FinancialTransaction, error) {
@@ -36,6 +38,7 @@ func (q *Queries) CreateFinancialTransaction(ctx context.Context, arg CreateFina
 		arg.Type,
 		arg.Status,
 		arg.TransactionDate,
+		arg.Description,
 	)
 	var i FinancialTransaction
 	err := row.Scan(
@@ -48,6 +51,7 @@ func (q *Queries) CreateFinancialTransaction(ctx context.Context, arg CreateFina
 		&i.TransactionDate,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.Description,
 	)
 	return i, err
 }
@@ -58,10 +62,11 @@ SET
     amount = COALESCE($2, amount),
     type = COLESCE($3, type),
     status = COLESCE($4, status),
-    transaction_date = COLESCE($5, transaction_date),
+    description = COLESCE($5, description),
+    transaction_date = COLESCE($6, transaction_date),
     updated_at = now()
 WHERE id = $1
-RETURNING id, amount, currency, cargo_id, type, status, transaction_date, created_at, updated_at
+RETURNING id, amount, currency, cargo_id, type, status, transaction_date, created_at, updated_at, description
 `
 
 type UpdateFinancialTransactionParams struct {
@@ -69,6 +74,7 @@ type UpdateFinancialTransactionParams struct {
 	Amount          *float64    `json:"amount"`
 	Type            interface{} `json:"type"`
 	Status          interface{} `json:"status"`
+	Description     interface{} `json:"description"`
 	TransactionDate interface{} `json:"transactionDate"`
 }
 
@@ -78,6 +84,7 @@ func (q *Queries) UpdateFinancialTransaction(ctx context.Context, arg UpdateFina
 		arg.Amount,
 		arg.Type,
 		arg.Status,
+		arg.Description,
 		arg.TransactionDate,
 	)
 	var i FinancialTransaction
@@ -91,6 +98,7 @@ func (q *Queries) UpdateFinancialTransaction(ctx context.Context, arg UpdateFina
 		&i.TransactionDate,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.Description,
 	)
 	return i, err
 }

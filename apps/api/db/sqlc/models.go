@@ -51,6 +51,7 @@ type FinancialTransaction struct {
 	TransactionDate time.Time `json:"transactionDate"`
 	CreatedAt       time.Time `json:"createdAt"`
 	UpdatedAt       time.Time `json:"updatedAt"`
+	Description     *string   `json:"description"`
 }
 
 type Vehicle struct {
