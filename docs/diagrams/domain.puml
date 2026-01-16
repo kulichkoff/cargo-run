@@ -1,0 +1,77 @@
+@startchen domain
+entity Driver {
+    id <<key>>
+    firstName
+    lastName
+}
+
+entity Truck {
+    id <<key>>
+    plateNumber
+    vin
+    make
+    model
+    year
+}
+
+entity Customer {
+    id <<key>>
+    companyName
+    companyType
+    inn
+    kpp
+    ogrn
+}
+
+entity Cargo {
+    id <<key>>
+    description
+    weight
+    volume
+    cargoType
+}
+
+entity Delivery {
+    id <<key>>
+    pickupAddress
+    deliveryAddress
+    pickupTime
+    deliveryDeadline
+}
+
+entity Transaction {
+    id <<key>>
+    amount
+    currency
+    type
+    status
+    transactionDate
+    description
+}
+
+relationship transports {
+}
+Delivery -1- transports
+transports -N- Cargo
+
+relationship assigned_to {
+}
+Delivery -N- assigned_to
+assigned_to -1- Driver
+
+relationship carried_by {
+}
+Delivery -N- carried_by
+carried_by -1- Truck
+
+relationship ordered_by {
+}
+Delivery -N- ordered_by
+ordered_by -1- Customer
+
+relationship relates_to {
+}
+Transaction -N- relates_to
+relates_to -N- Delivery
+
+@endchen
