@@ -2,6 +2,7 @@ package cargos
 
 import (
 	"cargorun/internal/db"
+	"cargorun/internal/transactions"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -10,10 +11,12 @@ func Router(r chi.Router) {
 	// Init repository
 	querier := db.GetQuerier()
 	repo := NewRepository(querier)
+	service := NewService(repo, transactions.NewRepository(querier))
 
 	// Init handlers
 	handler := &CargosHandler{
 		repository: repo,
+		service:    service,
 	}
 
 	// Register routes

@@ -21,6 +21,7 @@ type cargosRepo interface {
 
 type CargosHandler struct {
 	repository cargosRepo
+	service    *Service
 }
 
 func (h *CargosHandler) HandleCreate(w http.ResponseWriter, r *http.Request) {
@@ -31,7 +32,7 @@ func (h *CargosHandler) HandleCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	ctx := r.Context()
-	employee, err := h.repository.Create(ctx, cargoDTO)
+	employee, err := h.service.CreateCargo(ctx, cargoDTO)
 	if err != nil {
 		render.Render(w, r, httperr.ErrInternalServerError(err))
 		return
