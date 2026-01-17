@@ -1,0 +1,39 @@
+@startuml
+title "Delivery Aggregate (Logistics Context)"
+
+class Delivery <<Aggregate Root>> {
+  - id
+  - status
+  - pickupAddress
+  - deliveryAddress
+  + new()
+  + addCargoItem()
+  + removeCargoItem()
+  + assignDriver(driverId)
+  + assignTruck(truckId)
+  + markPickedUp()
+  + markDelivered()
+  + cancel()
+}
+note right of Delivery
+    - Cannot add cargo after pickup
+    - Cannot remove cargo after pickup
+    - Cannot assign after delivery is completed
+    - Cannot deliver before pickup
+    - Cannot pick up twice
+    - Cannot cancel after delivery
+end note
+
+class CargoItem {
+    - id
+    - description
+    - weight
+    - volume
+}
+
+Delivery "1" *-- "1..*" CargoItem : owns
+
+Delivery --> Driver : driverId
+Delivery --> Truck : truckId
+Delivery --> Customer : customerId
+@enduml
