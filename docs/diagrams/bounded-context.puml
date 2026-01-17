@@ -1,0 +1,10 @@
+@startuml
+title "Bounded Context Map"
+
+component "Logistics Context" as Logistics
+component "Finance Context" as Finance
+
+Logistics --> Finance : DeliveryCompleted (Event)
+Finance --> Logistics : PaymentConfirmed (Event)
+
+@enduml
