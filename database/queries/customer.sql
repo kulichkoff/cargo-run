@@ -1,5 +1,5 @@
 -- name: CreateCustomer :one
-INSERT INTO customers (
+INSERT INTO customer (
     company_name,
     company_type,
     inn,
@@ -9,6 +9,6 @@ INSERT INTO customers (
 RETURNING *;
 
 -- name: ListCustomers :many
-SELECT * FROM customers
+SELECT * FROM customer
 ORDER BY created_at
 LIMIT $1 OFFSET $2;

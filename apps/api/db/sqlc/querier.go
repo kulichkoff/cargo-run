@@ -11,25 +11,20 @@ import (
 type Querier interface {
 	CreateCargo(ctx context.Context, arg CreateCargoParams) (Cargo, error)
 	CreateCustomer(ctx context.Context, arg CreateCustomerParams) (Customer, error)
-	CreateEmployee(ctx context.Context, arg CreateEmployeeParams) (Employee, error)
-	CreateFinancialTransaction(ctx context.Context, arg CreateFinancialTransactionParams) (FinancialTransaction, error)
-	// Inserts a new vehicle and returns the created result
-	CreateVehicle(ctx context.Context, arg CreateVehicleParams) (Vehicle, error)
-	GetCargo(ctx context.Context, id int64) (Cargo, error)
-	GetEmployee(ctx context.Context, id int64) (Employee, error)
-	// Retrieves a single vehicle by ID
-	GetVehicle(ctx context.Context, id int64) (Vehicle, error)
-	ListCargos(ctx context.Context, arg ListCargosParams) ([]Cargo, error)
-	ListCargosDetailed(ctx context.Context, arg ListCargosDetailedParams) ([]ListCargosDetailedRow, error)
+	CreateDelivery(ctx context.Context, arg CreateDeliveryParams) (Delivery, error)
+	CreateDriver(ctx context.Context, arg CreateDriverParams) (Driver, error)
+	CreateTruck(ctx context.Context, arg CreateTruckParams) (Truck, error)
+	GetDelivery(ctx context.Context, id int64) (Delivery, error)
+	GetDriver(ctx context.Context, id int64) (Driver, error)
+	GetTruck(ctx context.Context, id int64) (Truck, error)
+	ListCargoByDelivery(ctx context.Context, arg ListCargoByDeliveryParams) ([]Cargo, error)
 	ListCustomers(ctx context.Context, arg ListCustomersParams) ([]Customer, error)
-	ListEmployees(ctx context.Context, arg ListEmployeesParams) ([]Employee, error)
-	// Retrieves all vehicles ordered by plate number with pagination
-	ListVehicles(ctx context.Context, arg ListVehiclesParams) ([]Vehicle, error)
-	UpdateCargo(ctx context.Context, arg UpdateCargoParams) (Cargo, error)
-	UpdateEmployee(ctx context.Context, arg UpdateEmployeeParams) (Employee, error)
-	UpdateFinancialTransaction(ctx context.Context, arg UpdateFinancialTransactionParams) (FinancialTransaction, error)
-	// Updates a vehicle's information and returns the updated record
-	UpdateVehicle(ctx context.Context, arg UpdateVehicleParams) (Vehicle, error)
+	ListDeliveries(ctx context.Context, arg ListDeliveriesParams) ([]Delivery, error)
+	ListDeliveriesDetailed(ctx context.Context, arg ListDeliveriesDetailedParams) ([]ListDeliveriesDetailedRow, error)
+	ListDrivers(ctx context.Context, arg ListDriversParams) ([]Driver, error)
+	ListTrucks(ctx context.Context, arg ListTrucksParams) ([]Truck, error)
+	UpdateDeliveru(ctx context.Context, arg UpdateDeliveruParams) (Delivery, error)
+	UpdateDriver(ctx context.Context, arg UpdateDriverParams) (Driver, error)
 }
 
 var _ Querier = (*Queries)(nil)

@@ -9,17 +9,14 @@ import (
 )
 
 type Cargo struct {
-	ID              int64     `json:"id"`
-	AddressSequence []string  `json:"addressSequence"`
-	EmployeeID      int64     `json:"employeeId"`
-	VehicleID       int64     `json:"vehicleId"`
-	StartDate       time.Time `json:"startDate"`
-	DeadlineDate    time.Time `json:"deadlineDate"`
-	Price           float64   `json:"price"`
-	PaymentStatus   int32     `json:"paymentStatus"`
-	CreatedAt       time.Time `json:"createdAt"`
-	UpdatedAt       time.Time `json:"updatedAt"`
-	CustomerID      int64     `json:"customerId"`
+	ID          int64     `json:"id"`
+	Weight      *float64  `json:"weight"`
+	Volume      *float64  `json:"volume"`
+	Type        *string   `json:"type"`
+	Description *string   `json:"description"`
+	DeliveryID  int64     `json:"deliveryId"`
+	CreatedAt   time.Time `json:"createdAt"`
+	UpdatedAt   time.Time `json:"updatedAt"`
 }
 
 type Customer struct {
@@ -33,7 +30,26 @@ type Customer struct {
 	UpdatedAt   time.Time `json:"updatedAt"`
 }
 
-type Employee struct {
+type Delivery struct {
+	ID               int64      `json:"id"`
+	PickupAddress    string     `json:"pickupAddress"`
+	DeliveryAddress  string     `json:"deliveryAddress"`
+	PickupTime       *time.Time `json:"pickupTime"`
+	DeliveryDeadline time.Time  `json:"deliveryDeadline"`
+	DriverID         int64      `json:"driverId"`
+	TruckID          int64      `json:"truckId"`
+	CustomerID       int64      `json:"customerId"`
+	Status           string     `json:"status"`
+	CreatedAt        time.Time  `json:"createdAt"`
+	UpdatedAt        time.Time  `json:"updatedAt"`
+}
+
+type DeliveryTransaction struct {
+	DeliveryID    int64 `json:"deliveryId"`
+	TransactionID int64 `json:"transactionId"`
+}
+
+type Driver struct {
 	ID        int64     `json:"id"`
 	FirstName string    `json:"firstName"`
 	LastName  string    `json:"lastName"`
@@ -41,26 +57,25 @@ type Employee struct {
 	UpdatedAt time.Time `json:"updatedAt"`
 }
 
-type FinancialTransaction struct {
-	ID              int64     `json:"id"`
-	Amount          float64   `json:"amount"`
-	Currency        *string   `json:"currency"`
-	CargoID         int64     `json:"cargoId"`
-	Type            string    `json:"type"`
-	Status          string    `json:"status"`
-	TransactionDate time.Time `json:"transactionDate"`
-	CreatedAt       time.Time `json:"createdAt"`
-	UpdatedAt       time.Time `json:"updatedAt"`
-	Description     *string   `json:"description"`
+type Transaction struct {
+	ID          int64     `json:"id"`
+	Amount      float64   `json:"amount"`
+	Currency    string    `json:"currency"`
+	Description *string   `json:"description"`
+	Category    *string   `json:"category"`
+	Type        string    `json:"type"`
+	Status      string    `json:"status"`
+	CreatedAt   time.Time `json:"createdAt"`
+	UpdatedAt   time.Time `json:"updatedAt"`
 }
 
-type Vehicle struct {
-	ID              int64     `json:"id"`
-	PlateNumber     string    `json:"plateNumber"`
-	Make            *string   `json:"make"`
-	Model           *string   `json:"model"`
-	Vin             *string   `json:"vin"`
-	ManufactureYear *int32    `json:"manufactureYear"`
-	CreatedAt       time.Time `json:"createdAt"`
-	UpdatedAt       time.Time `json:"updatedAt"`
+type Truck struct {
+	ID          int64     `json:"id"`
+	PlateNumber string    `json:"plateNumber"`
+	Make        *string   `json:"make"`
+	Model       *string   `json:"model"`
+	Vin         *string   `json:"vin"`
+	Year        *int32    `json:"year"`
+	CreatedAt   time.Time `json:"createdAt"`
+	UpdatedAt   time.Time `json:"updatedAt"`
 }
