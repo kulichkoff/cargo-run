@@ -1,17 +1,4 @@
--- Vehicles table
-CREATE TABLE IF NOT EXISTS vehicles (
-    id BIGSERIAL PRIMARY KEY,
-    plate_number VARCHAR(128) NOT NULL UNIQUE,
-    make VARCHAR(128),
-    model VARCHAR(128),
-    vin VARCHAR(128),
-    manufacture_year INT,
-    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
-    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
-);
-
--- Employees table
-CREATE TABLE IF NOT EXISTS employees (
+CREATE TABLE IF NOT EXISTS driver (
     id BIGSERIAL PRIMARY KEY,
     first_name VARCHAR(128) NOT NULL,
     last_name VARCHAR(128) NOT NULL,
@@ -19,23 +6,67 @@ CREATE TABLE IF NOT EXISTS employees (
     updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
 );
 
--- Cargos table
-CREATE TABLE cargos (
-  id               BIGSERIAL PRIMARY KEY,
-  address_sequence TEXT[] NOT NULL,
-  employee_id      BIGINT NOT NULL REFERENCES employees(id) ON DELETE RESTRICT,
-  vehicle_id       BIGINT NOT NULL REFERENCES vehicles(id) ON DELETE RESTRICT,
-  start_date       TIMESTAMPTZ NOT NULL,
-  deadline_date    TIMESTAMPTZ NOT NULL,
-  price            NUMERIC(12, 2) NOT NULL,
+CREATE TABLE IF NOT EXISTS truck (
+    id BIGSERIAL PRIMARY KEY,
+    plate_number VARCHAR(128) NOT NULL UNIQUE,
+    make VARCHAR(128),
+    model VARCHAR(128),
+    vin VARCHAR(128),
+    year INT,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
 
-  -- Payment status is an enum with following values
-  -- Canceled = -10
-  -- Failed = -1
-  -- Pending = 0
-  -- Paid = 10
-  payment_status   INT NOT NULL DEFAULT 0,
+CREATE TABLE IF NOT EXISTS customer (
+    id BIGSERIAL PRIMARY KEY,
+    company_name VARCHAR(255) NOT NULL,
+    company_type VARCHAR(64) NOT NULL,
+    inn VARCHAR(16) NOT NULL UNIQUE,
+    kpp VARCHAR(16) NOT NULL UNIQUE,
+    ogrn VARCHAR(16) NOT NULL UNIQUE,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
 
+CREATE TABLE IF NOT EXISTS delivery (
+  id BIGSERIAL PRIMARY KEY,
+  pickup_address TEXT NOT NULL,
+  delivery_address TEXT NOT NULL,
+  pickup_time TIMESTAMPTZ,
+  delivery_deadline TIMESTAMPTZ NOT NULL,
+  driver_id BIGINT NOT NULL REFERENCES driver(id) ON DELETE RESTRICT,
+  truck_id BIGINT NOT NULL REFERENCES truck(id) ON DELETE RESTRICT,
+  customer_id BIGINT NOT NULL REFERENCES customer(id) ON DELETE RESTRICT,
+  status VARCHAR(32) NOT NULL DEFAULT 'ordered',
   created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
   updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS cargo (
+    id BIGSERIAL PRIMARY KEY,
+    weight NUMERIC(13, 3),
+    volume NUMERIC(13, 3),
+    type VARCHAR(64),
+    description TEXT,
+    delivery_id BIGINT NOT NULL REFERENCES delivery(id) ON DELETE RESTRICT,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS transaction (
+    id BIGSERIAL PRIMARY KEY,
+    amount NUMERIC(12, 2) NOT NULL,
+    currency VARCHAR(8) NOT NULL,
+    description TEXT,
+    category VARCHAR(64),
+    type VARCHAR(64) NOT NULL,
+    status VARCHAR(64) NOT NULL DEFAULT 'completed',
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS delivery_transaction (
+    delivery_id BIGINT NOT NULL REFERENCES delivery(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    transaction_id BIGINT NOT NULL REFERENCES transaction(id) ON DELETE CASCADE,
+    CONSTRAINT delivery_transaction_pkey PRIMARY KEY (delivery_id, transaction_id)
 );
