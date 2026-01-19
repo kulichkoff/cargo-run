@@ -38,23 +38,26 @@ type Delivery struct {
 	cargo            []CargoItem
 }
 
-func New(
-	pickupAddress string,
-	deliveryAddress string,
-	deliveryDeadline time.Time,
-	initialCargo []NewCargoItem,
-	customerID *int64,
-) (*Delivery, error) {
+type NewDeliveryParams struct {
+	PickupAddress    string
+	DeliveryAddress  string
+	PickupTime       *time.Time
+	DeliveryDeadline time.Time
+	CustomerID       *int64
+	InitialCargo     []NewCargoItem
+}
+
+func New(params NewDeliveryParams) (*Delivery, error) {
 
 	d := &Delivery{
 		status:           StatusCreated,
-		pickupAddress:    pickupAddress,
-		deliveryAddress:  deliveryAddress,
-		deliveryDeadline: deliveryDeadline,
-		customerID:       customerID,
+		pickupAddress:    params.PickupAddress,
+		deliveryAddress:  params.DeliveryAddress,
+		deliveryDeadline: params.DeliveryDeadline,
+		customerID:       params.CustomerID,
 	}
 
-	for _, c := range initialCargo {
+	for _, c := range params.InitialCargo {
 		d.addCargo(c)
 	}
 

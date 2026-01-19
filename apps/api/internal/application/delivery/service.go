@@ -33,13 +33,14 @@ func (s *DeliveryService) CreateDelivery(
 	cmd CreateDeliveryCommand,
 ) error {
 
-	d, err := delivery.New(
-		cmd.PickupAddress,
-		cmd.DeliveryAddress,
-		cmd.DeliveryDeadline,
-		toDomainCargo(cmd.Cargo),
-		cmd.CustomerID,
-	)
+	d, err := delivery.New(delivery.NewDeliveryParams{
+		//PickupTime:       cmd.PickupTime,
+		PickupAddress:    cmd.PickupAddress,
+		DeliveryAddress:  cmd.DeliveryAddress,
+		DeliveryDeadline: cmd.DeliveryDeadline,
+		CustomerID:       cmd.CustomerID,
+		InitialCargo:     toDomainCargo(cmd.Cargo),
+	})
 	if err != nil {
 		return err
 	}
