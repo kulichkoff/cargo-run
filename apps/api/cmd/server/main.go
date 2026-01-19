@@ -5,6 +5,7 @@ import (
 	"cargorun/internal/config"
 	"cargorun/internal/db"
 	"cargorun/internal/transport/http/drivershttp"
+	"cargorun/internal/transport/http/truckhttp"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -48,6 +49,11 @@ func main() {
 
 		r.Route("/drivers", func(r chi.Router) {
 			handler := drivershttp.NewHandler(querier)
+			r.Get("/", handler.HandleList)
+			r.Post("/", handler.HandleCreate)
+		})
+		r.Route("/trucks", func(r chi.Router) {
+			handler := truckhttp.NewHandler(querier)
 			r.Get("/", handler.HandleList)
 			r.Post("/", handler.HandleCreate)
 		})
