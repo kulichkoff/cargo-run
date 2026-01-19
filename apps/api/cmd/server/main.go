@@ -2,11 +2,9 @@ package main
 
 import (
 	"cargorun/internal/auth"
-	"cargorun/internal/cargos"
 	"cargorun/internal/config"
-	"cargorun/internal/customers"
-	"cargorun/internal/employees"
-	"cargorun/internal/vehicles"
+	"cargorun/internal/db"
+	"cargorun/internal/transport/http/drivershttp"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -16,8 +14,9 @@ import (
 
 func main() {
 	config.MustLoad()
-	jwtSecret := config.JWTSecret()
+	querier := db.GetQuerier()
 
+	jwtSecret := config.JWTSecret()
 	auth.MustInit(jwtSecret)
 	jwtToken := auth.TokenAuth()
 
@@ -47,10 +46,11 @@ func main() {
 		r.Use(auth.Verifier(jwtToken))
 		r.Use(auth.JWTAuthenticator(jwtToken))
 
-		r.Route("/employees", employees.Router)
-		r.Route("/vehicles", vehicles.Router)
-		r.Route("/cargos", cargos.Router)
-		r.Route("/customers", customers.Router)
+		r.Route("/drivers", func(r chi.Router) {
+			handler := drivershttp.NewHandler(querier)
+			r.Get("/", handler.HandleList)
+			r.Post("/", handler.HandleCreate)
+		})
 	})
 
 	println("Server started on http://localhost:3333")

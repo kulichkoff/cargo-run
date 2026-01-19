@@ -34,7 +34,7 @@ func GetPool() *pgxpool.Pool {
 	return pool
 }
 
-func GetQuerier() sqlc.Querier {
+func GetQuerier() *sqlc.Queries {
 	p := GetPool()
 	return sqlc.New(p)
 }
