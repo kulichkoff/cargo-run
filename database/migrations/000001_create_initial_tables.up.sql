@@ -34,10 +34,10 @@ CREATE TABLE IF NOT EXISTS delivery (
   delivery_address TEXT NOT NULL,
   pickup_time TIMESTAMPTZ,
   delivery_deadline TIMESTAMPTZ NOT NULL,
-  driver_id BIGINT NOT NULL REFERENCES driver(id) ON DELETE RESTRICT,
-  truck_id BIGINT NOT NULL REFERENCES truck(id) ON DELETE RESTRICT,
-  customer_id BIGINT NOT NULL REFERENCES customer(id) ON DELETE RESTRICT,
-  status VARCHAR(32) NOT NULL DEFAULT 'ordered',
+  driver_id BIGINT REFERENCES driver(id) ON DELETE SET NULL,
+  truck_id BIGINT REFERENCES truck(id) ON DELETE SET NULL,
+  customer_id BIGINT REFERENCES customer(id) ON DELETE SET NULL,
+  status VARCHAR(32) NOT NULL DEFAULT 'created',
   created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
   updated_at TIMESTAMPTZ DEFAULT now() NOT NULL
 );
@@ -46,8 +46,8 @@ CREATE TABLE IF NOT EXISTS cargo (
     id BIGSERIAL PRIMARY KEY,
     weight NUMERIC(13, 3),
     volume NUMERIC(13, 3),
-    type VARCHAR(64),
-    description TEXT,
+    category VARCHAR(64) NOT NULL,
+    description TEXT NOT NULL,
     delivery_id BIGINT NOT NULL REFERENCES delivery(id) ON DELETE RESTRICT,
     created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
     updated_at TIMESTAMPTZ DEFAULT now() NOT NULL

@@ -2,7 +2,7 @@
 INSERT INTO cargo (
     weight,
     volume,
-    type,
+    category,
     description,
     delivery_id
 )

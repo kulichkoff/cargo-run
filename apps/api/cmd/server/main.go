@@ -1,10 +1,13 @@
 package main
 
 import (
+	deliveryapp "cargorun/internal/application/delivery"
 	"cargorun/internal/auth"
 	"cargorun/internal/config"
 	"cargorun/internal/db"
+	"cargorun/internal/domain/delivery"
 	"cargorun/internal/transport/http/customershttp"
+	deliveryhttp "cargorun/internal/transport/http/delivery"
 	"cargorun/internal/transport/http/drivershttp"
 	"cargorun/internal/transport/http/truckhttp"
 	"net/http"
@@ -61,6 +64,12 @@ func main() {
 		r.Route("/customers", func(r chi.Router) {
 			handler := customershttp.NewHandler(querier)
 			r.Get("/", handler.HandleList)
+			r.Post("/", handler.HandleCreate)
+		})
+		r.Route("/deliveries", func(r chi.Router) {
+			repo := delivery.NewRepository()
+			service := deliveryapp.NewService(repo)
+			handler := deliveryhttp.NewHandler(service)
 			r.Post("/", handler.HandleCreate)
 		})
 	})

@@ -28,9 +28,9 @@ type CreateDeliveryParams struct {
 	DeliveryAddress  string     `json:"deliveryAddress"`
 	PickupTime       *time.Time `json:"pickupTime"`
 	DeliveryDeadline time.Time  `json:"deliveryDeadline"`
-	DriverID         int64      `json:"driverId"`
-	TruckID          int64      `json:"truckId"`
-	CustomerID       int64      `json:"customerId"`
+	DriverID         *int64     `json:"driverId"`
+	TruckID          *int64     `json:"truckId"`
+	CustomerID       *int64     `json:"customerId"`
 }
 
 func (q *Queries) CreateDelivery(ctx context.Context, arg CreateDeliveryParams) (Delivery, error) {
@@ -226,7 +226,7 @@ func (q *Queries) ListDeliveriesDetailed(ctx context.Context, arg ListDeliveries
 	return items, nil
 }
 
-const updateDeliveru = `-- name: UpdateDeliveru :one
+const updateDelivery = `-- name: UpdateDelivery :one
 UPDATE delivery
 SET
     pickup_address = COALESCE($2, pickup_address),
@@ -242,7 +242,7 @@ WHERE id = $1
 RETURNING id, pickup_address, delivery_address, pickup_time, delivery_deadline, driver_id, truck_id, customer_id, status, created_at, updated_at
 `
 
-type UpdateDeliveruParams struct {
+type UpdateDeliveryParams struct {
 	ID               int64      `json:"id"`
 	PickupAddress    *string    `json:"pickupAddress"`
 	DeliveryAddress  *string    `json:"deliveryAddress"`
@@ -254,8 +254,8 @@ type UpdateDeliveruParams struct {
 	CustomerID       *int64     `json:"customerId"`
 }
 
-func (q *Queries) UpdateDeliveru(ctx context.Context, arg UpdateDeliveruParams) (Delivery, error) {
-	row := q.db.QueryRow(ctx, updateDeliveru,
+func (q *Queries) UpdateDelivery(ctx context.Context, arg UpdateDeliveryParams) (Delivery, error) {
+	row := q.db.QueryRow(ctx, updateDelivery,
 		arg.ID,
 		arg.PickupAddress,
 		arg.DeliveryAddress,

@@ -12,8 +12,8 @@ type Cargo struct {
 	ID          int64     `json:"id"`
 	Weight      *float64  `json:"weight"`
 	Volume      *float64  `json:"volume"`
-	Type        *string   `json:"type"`
-	Description *string   `json:"description"`
+	Category    string    `json:"category"`
+	Description string    `json:"description"`
 	DeliveryID  int64     `json:"deliveryId"`
 	CreatedAt   time.Time `json:"createdAt"`
 	UpdatedAt   time.Time `json:"updatedAt"`
@@ -36,9 +36,9 @@ type Delivery struct {
 	DeliveryAddress  string     `json:"deliveryAddress"`
 	PickupTime       *time.Time `json:"pickupTime"`
 	DeliveryDeadline time.Time  `json:"deliveryDeadline"`
-	DriverID         int64      `json:"driverId"`
-	TruckID          int64      `json:"truckId"`
-	CustomerID       int64      `json:"customerId"`
+	DriverID         *int64     `json:"driverId"`
+	TruckID          *int64     `json:"truckId"`
+	CustomerID       *int64     `json:"customerId"`
 	Status           string     `json:"status"`
 	CreatedAt        time.Time  `json:"createdAt"`
 	UpdatedAt        time.Time  `json:"updatedAt"`

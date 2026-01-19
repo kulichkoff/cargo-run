@@ -23,7 +23,7 @@ type Querier interface {
 	ListDeliveriesDetailed(ctx context.Context, arg ListDeliveriesDetailedParams) ([]ListDeliveriesDetailedRow, error)
 	ListDrivers(ctx context.Context, arg ListDriversParams) ([]Driver, error)
 	ListTrucks(ctx context.Context, arg ListTrucksParams) ([]Truck, error)
-	UpdateDeliveru(ctx context.Context, arg UpdateDeliveruParams) (Delivery, error)
+	UpdateDelivery(ctx context.Context, arg UpdateDeliveryParams) (Delivery, error)
 	UpdateDriver(ctx context.Context, arg UpdateDriverParams) (Driver, error)
 }
 

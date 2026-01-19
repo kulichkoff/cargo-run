@@ -13,19 +13,19 @@ const createCargo = `-- name: CreateCargo :one
 INSERT INTO cargo (
     weight,
     volume,
-    type,
+    category,
     description,
     delivery_id
 )
 VALUES ($1, $2, $3, $4, $5)
-RETURNING id, weight, volume, type, description, delivery_id, created_at, updated_at
+RETURNING id, weight, volume, category, description, delivery_id, created_at, updated_at
 `
 
 type CreateCargoParams struct {
 	Weight      *float64 `json:"weight"`
 	Volume      *float64 `json:"volume"`
-	Type        *string  `json:"type"`
-	Description *string  `json:"description"`
+	Category    string   `json:"category"`
+	Description string   `json:"description"`
 	DeliveryID  int64    `json:"deliveryId"`
 }
 
@@ -33,7 +33,7 @@ func (q *Queries) CreateCargo(ctx context.Context, arg CreateCargoParams) (Cargo
 	row := q.db.QueryRow(ctx, createCargo,
 		arg.Weight,
 		arg.Volume,
-		arg.Type,
+		arg.Category,
 		arg.Description,
 		arg.DeliveryID,
 	)
@@ -42,7 +42,7 @@ func (q *Queries) CreateCargo(ctx context.Context, arg CreateCargoParams) (Cargo
 		&i.ID,
 		&i.Weight,
 		&i.Volume,
-		&i.Type,
+		&i.Category,
 		&i.Description,
 		&i.DeliveryID,
 		&i.CreatedAt,
@@ -52,7 +52,7 @@ func (q *Queries) CreateCargo(ctx context.Context, arg CreateCargoParams) (Cargo
 }
 
 const listCargoByDelivery = `-- name: ListCargoByDelivery :many
-SELECT id, weight, volume, type, description, delivery_id, created_at, updated_at FROM cargo
+SELECT id, weight, volume, category, description, delivery_id, created_at, updated_at FROM cargo
 WHERE delivery_id = $1
 ORDER BY created_at DESC
 LIMIT $2 OFFSET $3
@@ -77,7 +77,7 @@ func (q *Queries) ListCargoByDelivery(ctx context.Context, arg ListCargoByDelive
 			&i.ID,
 			&i.Weight,
 			&i.Volume,
-			&i.Type,
+			&i.Category,
 			&i.Description,
 			&i.DeliveryID,
 			&i.CreatedAt,

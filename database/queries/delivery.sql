@@ -19,7 +19,7 @@ SELECT * FROM delivery
 ORDER BY created_at DESC
 LIMIT $1 OFFSET $2;
 
--- name: UpdateDeliveru :one
+-- name: UpdateDelivery :one
 UPDATE delivery
 SET
     pickup_address = COALESCE(sqlc.narg(pickup_address), pickup_address),
