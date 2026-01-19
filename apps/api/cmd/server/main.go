@@ -4,6 +4,7 @@ import (
 	"cargorun/internal/auth"
 	"cargorun/internal/config"
 	"cargorun/internal/db"
+	"cargorun/internal/transport/http/customershttp"
 	"cargorun/internal/transport/http/drivershttp"
 	"cargorun/internal/transport/http/truckhttp"
 	"net/http"
@@ -54,6 +55,11 @@ func main() {
 		})
 		r.Route("/trucks", func(r chi.Router) {
 			handler := truckhttp.NewHandler(querier)
+			r.Get("/", handler.HandleList)
+			r.Post("/", handler.HandleCreate)
+		})
+		r.Route("/customers", func(r chi.Router) {
+			handler := customershttp.NewHandler(querier)
 			r.Get("/", handler.HandleList)
 			r.Post("/", handler.HandleCreate)
 		})
