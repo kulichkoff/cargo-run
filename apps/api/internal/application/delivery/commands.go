@@ -6,6 +6,7 @@ type CreateDeliveryCommand struct {
 	PickupAddress    string
 	DeliveryAddress  string
 	DeliveryDeadline time.Time
+	PickupTime       *time.Time
 	CustomerID       *int64
 	Cargo            []CreateCargoItem
 }

@@ -34,7 +34,7 @@ func (s *DeliveryService) CreateDelivery(
 ) error {
 
 	d, err := delivery.New(delivery.NewDeliveryParams{
-		//PickupTime:       cmd.PickupTime,
+		PickupTime:       cmd.PickupTime,
 		PickupAddress:    cmd.PickupAddress,
 		DeliveryAddress:  cmd.DeliveryAddress,
 		DeliveryDeadline: cmd.DeliveryDeadline,

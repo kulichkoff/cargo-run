@@ -6,6 +6,7 @@ type CreateDeliveryRequest struct {
 	PickupAddress    string               `json:"pickupAddress"`
 	DeliveryAddress  string               `json:"deliveryAddress"`
 	DeliveryDeadline time.Time            `json:"deliveryDeadline"`
+	PickupTime       *time.Time           `json:"pickupTime"`
 	Cargo            []CreateCargoRequest `json:"cargo"`
 	CustomerID       *int64               `json:"customerId"`
 }
