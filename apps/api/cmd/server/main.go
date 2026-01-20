@@ -75,6 +75,8 @@ func main() {
 			r.Route("/{deliveryID}", func(r chi.Router) {
 				r.Post("/driver", handler.HandleAssignDriver)
 				r.Post("/truck", handler.HandleAssignTruck)
+				r.Post("/pickup", handler.HandlePickUp)
+				r.Post("/deliver", handler.HandleDeliver)
 			})
 		})
 	})

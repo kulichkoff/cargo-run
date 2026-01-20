@@ -118,6 +118,7 @@ func (d *Delivery) MarkPickedUp(pickUpTime *time.Time) error {
 		now := time.Now()
 		pTime = &now
 	}
+	d.pickupTime = pTime
 	d.status = StatusPickedUp
 	return nil
 }

@@ -88,6 +88,28 @@ func (s *DeliveryService) AssignTruck(
 	return s.repo.Save(ctx, d)
 }
 
+func (s *DeliveryService) PickUp(ctx context.Context, cmd PickUpCommand) error {
+	d, err := s.repo.Load(ctx, cmd.DeliveryID)
+	if err != nil {
+		return err
+	}
+	if err := d.MarkPickedUp(&cmd.PickedUpAt); err != nil {
+		return err
+	}
+	return s.repo.Save(ctx, d)
+}
+
+func (s *DeliveryService) Deliver(ctx context.Context, cmd MarkDeliveredCommand) error {
+	d, err := s.repo.Load(ctx, cmd.DeliveryID)
+	if err != nil {
+		return err
+	}
+	if err := d.MarkDelivered(); err != nil {
+		return nil
+	}
+	return s.repo.Save(ctx, d)
+}
+
 func (s *DeliveryService) ListDeliveries(
 	ctx context.Context,
 	query ListDeliveriesQuery,

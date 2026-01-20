@@ -40,3 +40,7 @@ type AssignDriverRequest struct {
 type AssignTruckRequest struct {
 	TruckID int `json:"truckId"`
 }
+
+type PickUpRequest struct {
+	PickedUpAt time.Time `json:"pickedUpAt"`
+}

@@ -31,3 +31,11 @@ type AssignTruckCommand struct {
 	DeliveryID int64
 	TruckID    int64
 }
+
+type PickUpCommand struct {
+	DeliveryID int64
+	PickedUpAt time.Time
+}
+type MarkDeliveredCommand struct {
+	DeliveryID int64
+}
