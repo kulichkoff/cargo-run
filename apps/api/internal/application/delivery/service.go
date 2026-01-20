@@ -58,6 +58,36 @@ func (s *DeliveryService) CreateDelivery(
 	return nil
 }
 
+func (s *DeliveryService) AssignDriver(
+	ctx context.Context,
+	cmd AssignDriverCommand,
+) error {
+	d, err := s.repo.Load(ctx, cmd.DeliveryID)
+	if err != nil {
+		return err
+	}
+
+	if err := d.AssignDriver(cmd.DriverID); err != nil {
+		return err
+	}
+	return s.repo.Save(ctx, d)
+}
+
+func (s *DeliveryService) AssignTruck(
+	ctx context.Context,
+	cmd AssignTruckCommand,
+) error {
+	d, err := s.repo.Load(ctx, cmd.DeliveryID)
+	if err != nil {
+		return err
+	}
+
+	if err := d.AssignTruck(cmd.TruckID); err != nil {
+		return err
+	}
+	return s.repo.Save(ctx, d)
+}
+
 func (s *DeliveryService) ListDeliveries(
 	ctx context.Context,
 	query ListDeliveriesQuery,

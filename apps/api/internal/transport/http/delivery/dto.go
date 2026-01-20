@@ -32,3 +32,11 @@ type ListDeliveriesResponse struct {
 	PageSize int                        `json:"pageSize"`
 	Total    int64                      `json:"total"`
 }
+
+type AssignDriverRequest struct {
+	DriverID int `json:"driverId"`
+}
+
+type AssignTruckRequest struct {
+	TruckID int `json:"truckId"`
+}

@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"
 )
 
@@ -84,4 +85,60 @@ func (h *handler) HandleList(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	render.JSON(w, r, list)
+}
+
+func (h *handler) HandleAssignDriver(w http.ResponseWriter, r *http.Request) {
+	var req AssignDriverRequest
+	if err := render.DecodeJSON(r.Body, &req); err != nil {
+		render.Render(w, r, httperr.ErrInvalidRequest(err))
+		return
+	}
+	deliveryID := chi.URLParam(r, "deliveryID")
+	if deliveryID == "" {
+		render.Render(w, r, httperr.ErrNotFound())
+		return
+	}
+	idParsed, err := strconv.ParseInt(deliveryID, 10, 64)
+	if err != nil {
+		render.Render(w, r, httperr.ErrInvalidRequest(err))
+		return
+	}
+	cmd := app.AssignDriverCommand{
+		DeliveryID: idParsed,
+		DriverID:   int64(req.DriverID),
+	}
+	ctx := r.Context()
+	if err := h.service.AssignDriver(ctx, cmd); err != nil {
+		render.Render(w, r, httperr.ErrInternalServerError(err))
+		return
+	}
+	w.WriteHeader(200)
+}
+
+func (h *handler) HandleAssignTruck(w http.ResponseWriter, r *http.Request) {
+	var req AssignTruckRequest
+	if err := render.DecodeJSON(r.Body, &req); err != nil {
+		render.Render(w, r, httperr.ErrInvalidRequest(err))
+		return
+	}
+	deliveryID := chi.URLParam(r, "deliveryID")
+	if deliveryID == "" {
+		render.Render(w, r, httperr.ErrNotFound())
+		return
+	}
+	idParsed, err := strconv.ParseInt(deliveryID, 10, 64)
+	if err != nil {
+		render.Render(w, r, httperr.ErrInvalidRequest(err))
+		return
+	}
+	cmd := app.AssignTruckCommand{
+		DeliveryID: idParsed,
+		TruckID:    int64(req.TruckID),
+	}
+	ctx := r.Context()
+	if err := h.service.AssignTruck(ctx, cmd); err != nil {
+		render.Render(w, r, httperr.ErrInternalServerError(err))
+		return
+	}
+	w.WriteHeader(200)
 }

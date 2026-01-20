@@ -22,3 +22,12 @@ type ListDeliveriesQuery struct {
 	Limit int32
 	Page  int32
 }
+
+type AssignDriverCommand struct {
+	DeliveryID int64
+	DriverID   int64
+}
+type AssignTruckCommand struct {
+	DeliveryID int64
+	TruckID    int64
+}

@@ -72,6 +72,10 @@ func main() {
 			handler := deliveryhttp.NewHandler(service)
 			r.Post("/", handler.HandleCreate)
 			r.Get("/", handler.HandleList)
+			r.Route("/{deliveryID}", func(r chi.Router) {
+				r.Post("/driver", handler.HandleAssignDriver)
+				r.Post("/truck", handler.HandleAssignTruck)
+			})
 		})
 	})
 

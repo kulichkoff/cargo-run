@@ -45,6 +45,7 @@ func (r *DeliveryRepository) Load(ctx context.Context, id int64) (*Delivery, err
 		}
 	}
 	return &Delivery{
+		id:               row.ID,
 		pickupAddress:    row.PickupAddress,
 		deliveryAddress:  row.DeliveryAddress,
 		pickupTime:       row.PickupTime,
