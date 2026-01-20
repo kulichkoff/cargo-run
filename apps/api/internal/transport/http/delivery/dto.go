@@ -17,3 +17,18 @@ type CreateCargoRequest struct {
 	WeightKg    *float64 `json:"weightKg"`
 	VolumeM3    *float64 `json:"volumeM3"`
 }
+
+type DeliveryListItemResponse struct {
+	ID               string    `json:"id"`
+	Status           string    `json:"status"`
+	PickupAddress    string    `json:"pickupAddress"`
+	DeliveryAddress  string    `json:"deliveryAddress"`
+	DeliveryDeadline time.Time `json:"deliveryDeadline"`
+}
+
+type ListDeliveriesResponse struct {
+	Items    []DeliveryListItemResponse `json:"items"`
+	Page     int                        `json:"page"`
+	PageSize int                        `json:"pageSize"`
+	Total    int64                      `json:"total"`
+}

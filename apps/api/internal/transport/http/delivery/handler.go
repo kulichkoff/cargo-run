@@ -4,6 +4,7 @@ import (
 	app "cargorun/internal/application/delivery"
 	"cargorun/pkg/httperr"
 	"net/http"
+	"strconv"
 
 	"github.com/go-chi/render"
 )
@@ -52,4 +53,35 @@ func (h *handler) HandleCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusCreated)
+}
+
+func (h *handler) HandleList(w http.ResponseWriter, r *http.Request) {
+	queryParams := r.URL.Query()
+	limitStr := queryParams.Get("limit")
+	pageStr := queryParams.Get("page")
+	var limit, page int32
+	if limitStr == "" {
+		limit = 100
+	} else {
+		lim, _ := strconv.ParseInt(limitStr, 10, 32)
+		limit = int32(lim)
+	}
+	if pageStr == "" {
+		page = 1
+	} else {
+		pg, _ := strconv.ParseInt(pageStr, 10, 32)
+		page = int32(pg)
+	}
+
+	query := app.ListDeliveriesQuery{
+		Limit: limit,
+		Page:  page,
+	}
+	ctx := r.Context()
+	list, err := h.service.ListDeliveries(ctx, query)
+	if err != nil {
+		render.Render(w, r, httperr.ErrInternalServerError(err))
+		return
+	}
+	render.JSON(w, r, list)
 }

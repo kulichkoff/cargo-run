@@ -150,9 +150,9 @@ SELECT
     d.created_at,
     d.updated_at
 FROM delivery d
-JOIN driver e ON e.id = d.driver_id
-JOIN truck v ON v.id = d.truck_id
-JOIN customer c ON c.id = d.customer_id
+LEFT JOIN driver e ON e.id = d.driver_id
+LEFT JOIN truck v ON v.id = d.truck_id
+LEFT JOIN customer c ON c.id = d.customer_id
 ORDER BY d.created_at
 LIMIT $1 OFFSET $2
 `
@@ -169,18 +169,18 @@ type ListDeliveriesDetailedRow struct {
 	PickupTime          *time.Time `json:"pickupTime"`
 	DeliveryDeadline    time.Time  `json:"deliveryDeadline"`
 	Status              string     `json:"status"`
-	DriverID            int64      `json:"driverId"`
-	DriverFirstName     string     `json:"driverFirstName"`
-	DriverLastName      string     `json:"driverLastName"`
-	TruckID             int64      `json:"truckId"`
-	TruckPlateNumber    string     `json:"truckPlateNumber"`
+	DriverID            *int64     `json:"driverId"`
+	DriverFirstName     *string    `json:"driverFirstName"`
+	DriverLastName      *string    `json:"driverLastName"`
+	TruckID             *int64     `json:"truckId"`
+	TruckPlateNumber    *string    `json:"truckPlateNumber"`
 	TruckMake           *string    `json:"truckMake"`
-	CustomerID          int64      `json:"customerId"`
-	CustomerCompanyType string     `json:"customerCompanyType"`
-	CustomerCompanyName string     `json:"customerCompanyName"`
-	CustomerInn         string     `json:"customerInn"`
-	CustomerKpp         string     `json:"customerKpp"`
-	CustomerOgrn        string     `json:"customerOgrn"`
+	CustomerID          *int64     `json:"customerId"`
+	CustomerCompanyType *string    `json:"customerCompanyType"`
+	CustomerCompanyName *string    `json:"customerCompanyName"`
+	CustomerInn         *string    `json:"customerInn"`
+	CustomerKpp         *string    `json:"customerKpp"`
+	CustomerOgrn        *string    `json:"customerOgrn"`
 	CreatedAt           time.Time  `json:"createdAt"`
 	UpdatedAt           time.Time  `json:"updatedAt"`
 }

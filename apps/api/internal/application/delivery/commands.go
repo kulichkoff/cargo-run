@@ -17,3 +17,8 @@ type CreateCargoItem struct {
 	Description string
 	Category    string
 }
+
+type ListDeliveriesQuery struct {
+	Limit int32
+	Page  int32
+}

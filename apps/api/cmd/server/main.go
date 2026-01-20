@@ -19,7 +19,6 @@ import (
 
 func main() {
 	config.MustLoad()
-	querier := db.GetQuerier()
 
 	jwtSecret := config.JWTSecret()
 	auth.MustInit(jwtSecret)
@@ -48,6 +47,7 @@ func main() {
 	})
 
 	r.Group(func(r chi.Router) {
+		querier := db.GetQuerier()
 		r.Use(auth.Verifier(jwtToken))
 		r.Use(auth.JWTAuthenticator(jwtToken))
 
@@ -68,9 +68,10 @@ func main() {
 		})
 		r.Route("/deliveries", func(r chi.Router) {
 			repo := delivery.NewRepository()
-			service := deliveryapp.NewService(repo)
+			service := deliveryapp.NewService(repo, *querier)
 			handler := deliveryhttp.NewHandler(service)
 			r.Post("/", handler.HandleCreate)
+			r.Get("/", handler.HandleList)
 		})
 	})
 
