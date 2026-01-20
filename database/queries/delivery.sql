@@ -62,3 +62,6 @@ LEFT JOIN truck v ON v.id = d.truck_id
 LEFT JOIN customer c ON c.id = d.customer_id
 ORDER BY d.created_at
 LIMIT $1 OFFSET $2;
+
+-- name: CountDeliveries :one
+SELECT COUNT(*) FROM delivery;

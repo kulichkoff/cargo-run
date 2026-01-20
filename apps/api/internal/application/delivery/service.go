@@ -62,6 +62,11 @@ func (s *DeliveryService) ListDeliveries(
 	ctx context.Context,
 	query ListDeliveriesQuery,
 ) (*ListDeliveriesResult, error) {
+	total, err := s.querier.CountDeliveries(ctx)
+	if err != nil {
+		return nil, err
+	}
+
 	offset := query.Limit * (query.Page - 1)
 	rows, err := s.querier.ListDeliveriesDetailed(
 		ctx,
@@ -113,6 +118,6 @@ func (s *DeliveryService) ListDeliveries(
 		Hits:     list,
 		Page:     int(query.Page),
 		PageSize: int(query.Limit),
-		Total:    -1,
+		Total:    total,
 	}, nil
 }

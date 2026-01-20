@@ -10,6 +10,17 @@ import (
 	"time"
 )
 
+const countDeliveries = `-- name: CountDeliveries :one
+SELECT COUNT(*) FROM delivery
+`
+
+func (q *Queries) CountDeliveries(ctx context.Context) (int64, error) {
+	row := q.db.QueryRow(ctx, countDeliveries)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
 const createDelivery = `-- name: CreateDelivery :one
 INSERT INTO delivery (
     pickup_address,

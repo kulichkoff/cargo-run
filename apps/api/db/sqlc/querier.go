@@ -9,6 +9,7 @@ import (
 )
 
 type Querier interface {
+	CountDeliveries(ctx context.Context) (int64, error)
 	CreateCargo(ctx context.Context, arg CreateCargoParams) (Cargo, error)
 	CreateCustomer(ctx context.Context, arg CreateCustomerParams) (Customer, error)
 	CreateDelivery(ctx context.Context, arg CreateDeliveryParams) (Delivery, error)
