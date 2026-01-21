@@ -10,6 +10,7 @@ import (
 	"cargorun/internal/transport/http/customershttp"
 	deliveryhttp "cargorun/internal/transport/http/delivery"
 	"cargorun/internal/transport/http/drivershttp"
+	"cargorun/internal/transport/http/transactionshttp"
 	"cargorun/internal/transport/http/truckhttp"
 	"net/http"
 
@@ -48,7 +49,10 @@ func main() {
 	})
 
 	r.Group(func(r chi.Router) {
+		// Global app dependencies
 		querier := db.GetQuerier()
+		transactionRepo := transactionsrepo.New(db.GetPool())
+
 		r.Use(auth.Verifier(jwtToken))
 		r.Use(auth.JWTAuthenticator(jwtToken))
 
@@ -81,11 +85,14 @@ func main() {
 				r.Put("/deliver", handler.HandleDeliver)
 
 				r.Route("/transactions", func(r chi.Router) {
-					transactionRepo := transactionsrepo.New(db.GetPool())
 					handler := deliveryhttp.NewTransactionsHandler(transactionRepo)
 					r.Post("/", handler.HandleCreate)
 				})
 			})
+		})
+		r.Route("/transactions", func(r chi.Router) {
+			handler := transactionshttp.NewHandler(transactionRepo)
+			r.Post("/", handler.HandleCreate)
 		})
 	})
 
