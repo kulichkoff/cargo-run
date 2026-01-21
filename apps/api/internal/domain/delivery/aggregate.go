@@ -73,6 +73,10 @@ func (d *Delivery) addCargo(c NewCargoItem) {
 	))
 }
 
+func (d *Delivery) ID() int64 {
+	return d.id
+}
+
 func (d *Delivery) AddCargoItem(
 	description string,
 	category string,

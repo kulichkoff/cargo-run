@@ -6,6 +6,7 @@ import (
 	"cargorun/internal/config"
 	"cargorun/internal/db"
 	"cargorun/internal/domain/delivery"
+	transactionsrepo "cargorun/internal/infra/db/transactions"
 	"cargorun/internal/transport/http/customershttp"
 	deliveryhttp "cargorun/internal/transport/http/delivery"
 	"cargorun/internal/transport/http/drivershttp"
@@ -73,10 +74,17 @@ func main() {
 			r.Post("/", handler.HandleCreate)
 			r.Get("/", handler.HandleList)
 			r.Route("/{deliveryID}", func(r chi.Router) {
+				r.Use(deliveryhttp.DeliveryContext(repo))
 				r.Put("/driver", handler.HandleAssignDriver)
 				r.Put("/truck", handler.HandleAssignTruck)
 				r.Put("/pickup", handler.HandlePickUp)
 				r.Put("/deliver", handler.HandleDeliver)
+
+				r.Route("/transactions", func(r chi.Router) {
+					transactionRepo := transactionsrepo.New(db.GetPool())
+					handler := deliveryhttp.NewTransactionsHandler(transactionRepo)
+					r.Post("/", handler.HandleCreate)
+				})
 			})
 		})
 	})

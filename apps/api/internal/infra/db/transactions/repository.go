@@ -4,15 +4,16 @@ import (
 	"cargorun/db/sqlc"
 	"cargorun/internal/domain/transactions"
 	"context"
+	"log/slog"
 
-	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type TransactionsRepository struct {
-	tx pgx.Tx
+	tx *pgxpool.Pool
 }
 
-func New(tx pgx.Tx) *TransactionsRepository {
+func New(tx *pgxpool.Pool) *TransactionsRepository {
 	return &TransactionsRepository{
 		tx: tx,
 	}
@@ -73,10 +74,15 @@ func (r *TransactionsRepository) Save(
 			Type:        string(t.TransactionType),
 			Status:      string(t.Status),
 		})
+		t.ID = newTransaction.ID
 		if err := r.saveDeliveriesRef(ctx, q, t); err != nil {
+			slog.ErrorContext(
+				ctx,
+				"Failed to save deliveries refs for new transaction",
+				slog.Any("transaction", t),
+			)
 			return err
 		}
-		t.ID = newTransaction.ID
 	} else {
 		// Update
 		newTransaction, err = q.UpdateTransaction(ctx, sqlc.UpdateTransactionParams{
