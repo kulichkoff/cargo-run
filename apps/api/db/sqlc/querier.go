@@ -27,6 +27,7 @@ type Querier interface {
 	ListDeliveriesByTransaction(ctx context.Context, transactionID int64) ([]Delivery, error)
 	ListDeliveriesDetailed(ctx context.Context, arg ListDeliveriesDetailedParams) ([]ListDeliveriesDetailedRow, error)
 	ListDrivers(ctx context.Context, arg ListDriversParams) ([]Driver, error)
+	ListTransactionsByDelivery(ctx context.Context, deliveryID int64) ([]Transaction, error)
 	ListTrucks(ctx context.Context, arg ListTrucksParams) ([]Truck, error)
 	UpdateDelivery(ctx context.Context, arg UpdateDeliveryParams) (Delivery, error)
 	UpdateDriver(ctx context.Context, arg UpdateDriverParams) (Driver, error)

@@ -51,3 +51,39 @@ func (q *Queries) ListDeliveriesByTransaction(ctx context.Context, transactionID
 	}
 	return items, nil
 }
+
+const listTransactionsByDelivery = `-- name: ListTransactionsByDelivery :many
+SELECT t.id, t.amount, t.currency, t.description, t.category, t.type, t.status, t.created_at, t.updated_at FROM delivery_transaction dt
+RIGHT JOIN transaction t ON dt.transaction_id = t.id
+WHERE dt.delivery_id = $1
+`
+
+func (q *Queries) ListTransactionsByDelivery(ctx context.Context, deliveryID int64) ([]Transaction, error) {
+	rows, err := q.db.Query(ctx, listTransactionsByDelivery, deliveryID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Transaction{}
+	for rows.Next() {
+		var i Transaction
+		if err := rows.Scan(
+			&i.ID,
+			&i.Amount,
+			&i.Currency,
+			&i.Description,
+			&i.Category,
+			&i.Type,
+			&i.Status,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}

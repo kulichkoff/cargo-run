@@ -50,8 +50,9 @@ func main() {
 
 	r.Group(func(r chi.Router) {
 		// Global app dependencies
+		dbPool := db.GetPool()
 		querier := db.GetQuerier()
-		transactionRepo := transactionsrepo.New(db.GetPool())
+		transactionRepo := transactionsrepo.New(dbPool)
 
 		r.Use(auth.Verifier(jwtToken))
 		r.Use(auth.JWTAuthenticator(jwtToken))
@@ -85,7 +86,8 @@ func main() {
 				r.Put("/deliver", handler.HandleDeliver)
 
 				r.Route("/transactions", func(r chi.Router) {
-					handler := deliveryhttp.NewTransactionsHandler(transactionRepo)
+					handler := deliveryhttp.NewTransactionsHandler(dbPool)
+					r.Get("/", handler.HandleListByDelivery)
 					r.Post("/", handler.HandleCreate)
 				})
 			})
