@@ -4,13 +4,15 @@ import { Button } from '@/components/ui/button';
 import { DialogTrigger } from '@/components/ui/dialog';
 import { customersColumns } from '@/entities/customer/model/customer.columns';
 import { CreateCustomerDialog } from '@/features/create-customer';
-import { DataTable } from '@/shared/ui';
+import { DataTable, EmptyLoading } from '@/shared/ui';
 import { useCustomersQuery } from '@/entities/customer';
 import { Plus } from 'lucide-react';
 
 export function CustomersDataTable() {
   const customersQuery = useCustomersQuery();
-
+  if (customersQuery.isLoading) {
+    return <EmptyLoading spinning={true} />;
+  }
   return (
     <div>
       <CreateCustomerDialog>
