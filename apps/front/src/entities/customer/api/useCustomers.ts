@@ -1,14 +1,20 @@
-import axios from 'axios';
-import { CustomerModel } from '../model';
+import { useQuery } from '@tanstack/react-query';
 import { environment } from '@/env';
-import { queryOptions } from '@tanstack/react-query';
+import { CustomerModel } from '../model';
+import { clientAxios } from '@/shared/lib';
 
-const fetchCustomers = async (): Promise<CustomerModel[]> => {
-  const respone = await axios.get(`${environment.apiUrl}/customers`);
-  return respone.data;
+async function fetchCustomers(): Promise<CustomerModel[]> {
+  const { data } = await clientAxios.get(`${environment.apiUrl}/customers`);
+  return data.map((customer: CustomerModel) => ({
+    ...customer,
+    createdAt: new Date(customer.createdAt),
+    updatedAt: new Date(customer.updatedAt),
+  }));
+}
+
+export const useCustomersQuery = () => {
+  return useQuery({
+    queryKey: ['customers'],
+    queryFn: fetchCustomers,
+  });
 };
-
-export const customersQueryOptions = queryOptions({
-  queryKey: ['customers'],
-  queryFn: () => fetchCustomers(),
-});

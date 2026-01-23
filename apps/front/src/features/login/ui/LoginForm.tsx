@@ -11,14 +11,14 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import z from 'zod';
-import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
+import { clientAxios } from '@/shared/lib';
 
 export const loginFormSchema = z.object({
-  username: z.string('Необходимо заполнить'),
-  password: z.string('Необходимо заполнить'),
+  username: z.string('Необходимо заполнить').min(1, 'Необходимо заполнить'),
+  password: z.string('Необходимо заполнить').min(1, 'Необходимо заполнить'),
 });
 
 export type LoginFormData = z.infer<typeof loginFormSchema>;
@@ -33,7 +33,7 @@ export function LoginForm() {
     },
   });
   const onSubmit: SubmitHandler<LoginFormData> = (data) => {
-    axios.post('/api/auth/login', data).then(() => {
+    clientAxios.post('/auth/login', data).then(() => {
       router.push('/');
     });
     form.reset();

@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { CustomerType, getCustomerTypeLocale } from '@/entities/customer';
+import { CompanyType, getCustomerTypeLocale } from '@/entities/customer';
 import {
   Select,
   SelectContent,
@@ -45,7 +45,7 @@ export function CreateCustomerDialog({ children }: CreateCustomerDialogProps) {
     form.reset();
   };
 
-  const customerTypes = Object.values(CustomerType);
+  const customerTypes = Object.values(CompanyType);
 
   const customerTypeValue = useWatch({
     control: form.control,
@@ -122,7 +122,7 @@ export function CreateCustomerDialog({ children }: CreateCustomerDialogProps) {
               )}
             />
 
-            {customerTypeValue !== CustomerType.Individual && (
+            {customerTypeValue !== CompanyType.Individual && (
               <FormField
                 control={form.control}
                 name="kpp"

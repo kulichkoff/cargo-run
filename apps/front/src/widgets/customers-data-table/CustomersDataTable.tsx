@@ -2,15 +2,14 @@
 
 import { Button } from '@/components/ui/button';
 import { DialogTrigger } from '@/components/ui/dialog';
-import { customersQueryOptions } from '@/entities/customer';
 import { customersColumns } from '@/entities/customer/model/customer.columns';
 import { CreateCustomerDialog } from '@/features/create-customer';
 import { DataTable } from '@/shared/ui';
-import { useQuery } from '@tanstack/react-query';
+import { useCustomersQuery } from '@/entities/customer';
 import { Plus } from 'lucide-react';
 
 export function CustomersDataTable() {
-  const customersQuery = useQuery(customersQueryOptions);
+  const customersQuery = useCustomersQuery();
 
   return (
     <div>

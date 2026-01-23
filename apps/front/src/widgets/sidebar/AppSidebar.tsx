@@ -30,13 +30,13 @@ const routes = [
     icon: BriefcaseBusiness,
   },
   {
-    title: 'Сотрудники',
-    url: '/employees',
+    title: 'Водители',
+    url: '/drivers',
     icon: User,
   },
   {
-    title: 'Транспорт',
-    url: '/vehicles',
+    title: 'Автопарк',
+    url: '/trucks',
     icon: Truck,
   },
 ];

@@ -1,14 +1,14 @@
-import { CustomerType } from '../model';
+import { CompanyType } from '../model';
 
-export function getCustomerTypeLocale(type: CustomerType): string {
+export function getCustomerTypeLocale(type: CompanyType): string {
   switch (type) {
-    case CustomerType.Individual:
+    case CompanyType.Individual:
       return 'ИП';
-    case CustomerType.Legal:
+    case CompanyType.Legal:
       return 'ООО';
-    case CustomerType.Partner:
+    case CompanyType.Partner:
       return 'Партнер';
-    case CustomerType.JointStock:
+    case CompanyType.JointStock:
       return 'АО';
   }
 }
