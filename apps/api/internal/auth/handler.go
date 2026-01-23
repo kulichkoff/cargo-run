@@ -29,7 +29,6 @@ func (h *HTTPHandler) HandleLogin(w http.ResponseWriter, r *http.Request) {
 			Value:    accessToken,
 			Path:     "/",
 			HttpOnly: true,
-			SameSite: http.SameSiteLaxMode,
 		})
 		render.JSON(w, r, map[string]interface{}{
 			"accessToken": accessToken,
