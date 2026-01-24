@@ -35,7 +35,7 @@ export default function RootLayout({
           <SidebarProvider>
             <AppSidebar />
             <SidebarTrigger />
-            <main className="py-6 mx-auto">{children}</main>
+            <main className="py-6 max-w-2xl w-full mx-auto">{children}</main>
           </SidebarProvider>
         </ClientProviders>
       </body>
