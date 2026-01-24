@@ -25,7 +25,7 @@ export function CustomersDataTable() {
           </DialogTrigger>
         </div>
       </CreateCustomerDialog>
-      <div className="overflow-x-scroll">
+      <div className="overflow-x-auto">
         <DataTable
           columns={customersColumns}
           data={customersQuery.data ?? []}
