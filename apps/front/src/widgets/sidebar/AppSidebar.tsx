@@ -21,7 +21,7 @@ const routes = [
   },
   {
     title: 'Перевозки',
-    url: '/cargos',
+    url: '/deliveries',
     icon: Package,
   },
   {
