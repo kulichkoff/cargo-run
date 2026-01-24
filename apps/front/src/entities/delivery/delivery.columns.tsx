@@ -13,23 +13,33 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { MoreHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { dateToCalendar } from '@/shared/lib/transform/date';
 
 export const deliveryColumns: ColumnDef<DeliveryModel>[] = [
   {
     id: 'driver',
     accessorFn: ({ driver }) =>
-      driver ? `${driver?.lastName} ${driver?.firstName[0].toUpperCase()}.` : '-',
+      driver
+        ? `${driver?.lastName} ${driver?.firstName[0].toUpperCase()}.`
+        : '-',
     header: 'Водитель',
   },
   {
     id: 'truck',
-    accessorFn: ({ truck }) => truck ? `${truck?.make} ${truck?.plateNumber}` : '-',
+    accessorFn: ({ truck }) =>
+      truck ? `${truck?.make} ${truck?.plateNumber}` : '-',
     header: 'Машина',
   },
   {
     id: 'customer',
-    accessorFn: ({ customer }) => customer ? customer?.companyName : '-',
+    accessorFn: ({ customer }) => (customer ? customer?.companyName : '-'),
     header: 'Заказчик',
+  },
+  {
+    id: 'pickupTime',
+    accessorFn: ({ pickupTime }) =>
+      pickupTime ? dateToCalendar(pickupTime) : '-',
+    header: 'Время выдачи',
   },
   {
     id: 'pickupAddress',
@@ -37,19 +47,15 @@ export const deliveryColumns: ColumnDef<DeliveryModel>[] = [
     header: 'Пункт выдачи',
   },
   {
+    id: 'deliveryDeadline',
+    accessorFn: ({ deliveryDeadline }) =>
+      deliveryDeadline ? dateToCalendar(deliveryDeadline) : '-',
+    header: 'Срок доставки',
+  },
+  {
     id: 'deliveryAddress',
     accessorKey: 'deliveryAddress',
     header: 'Пункт доставки',
-  },
-  {
-    id: 'pickupTime',
-    accessorKey: 'pickupTime',
-    header: 'Время выдачи',
-  },
-  {
-    id: 'deliveryDeadline',
-    accessorKey: 'deliveryDeadline',
-    header: 'Срок доставки',
   },
   {
     id: 'status',
