@@ -5,6 +5,7 @@ import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/widgets/sidebar';
 import { ClientProviders } from '@/shared/lib';
 import './globals.css';
+import { Toaster } from '@/components/ui/sonner';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -36,6 +37,7 @@ export default function RootLayout({
             <AppSidebar />
             <SidebarTrigger />
             <main className="py-6 max-w-2xl w-full mx-auto">{children}</main>
+            <Toaster />
           </SidebarProvider>
         </ClientProviders>
       </body>
