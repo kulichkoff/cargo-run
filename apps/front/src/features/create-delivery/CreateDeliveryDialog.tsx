@@ -157,7 +157,7 @@ export function CreateDeliveryDialog({ children }: CreateDeliveryDialogProps) {
               name="deliveryDeadline"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Дата доставки</FormLabel>
+                  <FormLabel>Срок доставки</FormLabel>
                   <FormControl>
                     <Popover>
                       <PopoverTrigger asChild>
