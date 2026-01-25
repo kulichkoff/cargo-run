@@ -164,7 +164,7 @@ FROM delivery d
 LEFT JOIN driver e ON e.id = d.driver_id
 LEFT JOIN truck v ON v.id = d.truck_id
 LEFT JOIN customer c ON c.id = d.customer_id
-ORDER BY d.created_at
+ORDER BY d.created_at DESC
 LIMIT $1 OFFSET $2
 `
 
