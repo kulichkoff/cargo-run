@@ -1,5 +1,10 @@
 import { ColumnDef } from '@tanstack/react-table';
-import { DeliveryModel, DeliveryStatus } from './delivery.model';
+import {
+  DeliveryModel,
+  DeliveryStatus,
+  getDeliveryStatusColorClass,
+  getDeliveryStatusLocale,
+} from './delivery.model';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +19,7 @@ import {
 import { MoreHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { dateToCalendar } from '@/shared/lib/transform/date';
+import { Badge } from '@/components/ui/badge';
 
 export const deliveryColumns: ColumnDef<DeliveryModel>[] = [
   {
@@ -62,16 +68,11 @@ export const deliveryColumns: ColumnDef<DeliveryModel>[] = [
     accessorKey: 'status',
     header: 'Статус',
     cell: ({ row }) => {
-      switch (row.original.status) {
-        case DeliveryStatus.Created:
-          return 'Создан';
-        case DeliveryStatus.PickedUp:
-          return 'Выдан';
-        case DeliveryStatus.Delivered:
-          return 'Доставлен';
-        case DeliveryStatus.Canceled:
-          return 'Отменен';
-      }
+      return (
+        <Badge className={getDeliveryStatusColorClass(row.original.status)}>
+          {getDeliveryStatusLocale(row.original.status)}
+        </Badge>
+      );
     },
   },
   {
@@ -100,11 +101,13 @@ export const deliveryColumns: ColumnDef<DeliveryModel>[] = [
                     key={status}
                     disabled={delivery.status === status}
                   >
-                    {status.charAt(0).toUpperCase() + status.slice(1)}
+                    {getDeliveryStatusLocale(status)}
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuSubContent>
             </DropdownMenuSub>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem disabled>Прикрепить документы</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem disabled>Просмотреть водителя</DropdownMenuItem>
             <DropdownMenuItem disabled>Просмотреть машину</DropdownMenuItem>
