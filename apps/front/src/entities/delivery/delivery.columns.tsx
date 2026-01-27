@@ -1,4 +1,4 @@
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, RowData } from '@tanstack/react-table';
 import {
   DeliveryModel,
   DeliveryStatus,
@@ -20,6 +20,12 @@ import { MoreHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { dateToCalendar } from '@/shared/lib/transform/date';
 import { Badge } from '@/components/ui/badge';
+
+declare module '@tanstack/react-table' {
+  interface TableMeta<TData extends RowData> {
+    onAssignDriver: (deliveryId: number) => void;
+  }
+}
 
 export const deliveryColumns: ColumnDef<DeliveryModel>[] = [
   {
@@ -78,7 +84,7 @@ export const deliveryColumns: ColumnDef<DeliveryModel>[] = [
   {
     id: 'actions',
     enableHiding: false,
-    cell: ({ row }) => {
+    cell: ({ row, table }) => {
       const delivery = row.original;
       return (
         <DropdownMenu>
@@ -90,7 +96,11 @@ export const deliveryColumns: ColumnDef<DeliveryModel>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Действия</DropdownMenuLabel>
-            <DropdownMenuItem>Назначить водителя</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => table.options.meta?.onAssignDriver?.(delivery.id)}
+            >
+              Назначить водителя
+            </DropdownMenuItem>
             <DropdownMenuItem>Назначить машину</DropdownMenuItem>
             <DropdownMenuItem>Установить заказчика</DropdownMenuItem>
             <DropdownMenuSub>

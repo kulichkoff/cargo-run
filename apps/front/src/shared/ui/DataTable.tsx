@@ -13,6 +13,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   SortingState,
+  TableMeta,
   useReactTable,
   VisibilityState,
   type ColumnDef,
@@ -30,11 +31,13 @@ import { ChevronDown } from 'lucide-react';
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  meta?: TableMeta<TData>;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  meta,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -50,6 +53,7 @@ export function DataTable<TData, TValue>({
       sorting,
       columnVisibility,
     },
+    meta,
   });
 
   return (
