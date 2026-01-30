@@ -1,10 +1,9 @@
-import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import { environment } from '@/env';
 import { TruckModel } from './truck.model';
+import { clientAxios } from '@/shared/lib';
 
 async function fetchTrucks(): Promise<TruckModel[]> {
-  const { data } = await axios.get(`${environment.apiUrl}/trucks`);
+  const { data } = await clientAxios.get('/trucks');
   return data.map((truck: TruckModel) => ({
     ...truck,
     createdAt: new Date(truck.createdAt),
