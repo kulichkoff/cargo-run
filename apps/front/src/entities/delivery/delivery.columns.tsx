@@ -25,6 +25,7 @@ declare module '@tanstack/react-table' {
   interface TableMeta<TData extends RowData> {
     onAssignDriver: (deliveryId: number) => void;
     onAssignTruck: (deliveryId: number) => void;
+    onSetStatus: (deliveryId: number, status: DeliveryStatus) => void;
   }
 }
 
@@ -107,7 +108,7 @@ export const deliveryColumns: ColumnDef<DeliveryModel>[] = [
             >
               Назначить машину
             </DropdownMenuItem>
-            <DropdownMenuItem>Установить заказчика</DropdownMenuItem>
+            <DropdownMenuItem disabled>Установить заказчика</DropdownMenuItem>
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>Установить статус</DropdownMenuSubTrigger>
               <DropdownMenuSubContent>
@@ -115,6 +116,7 @@ export const deliveryColumns: ColumnDef<DeliveryModel>[] = [
                   <DropdownMenuItem
                     key={status}
                     disabled={delivery.status === status}
+                    onClick={() => table.options.meta?.onSetStatus?.(delivery.id, status)}
                   >
                     {getDeliveryStatusLocale(status)}
                   </DropdownMenuItem>

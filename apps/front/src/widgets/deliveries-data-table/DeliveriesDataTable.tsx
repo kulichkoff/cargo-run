@@ -2,12 +2,17 @@
 
 import { Button } from '@/components/ui/button';
 import { DialogTrigger } from '@/components/ui/dialog';
-import { deliveryColumns, useDeliveries } from '@/entities/delivery';
+import {
+  deliveryColumns,
+  DeliveryStatus,
+  useDeliveries,
+} from '@/entities/delivery';
 import { CreateDeliveryDialog } from '@/features/create-delivery';
 import {
   AssignDriverDialog,
   AssignTruckDialog,
 } from '@/features/delivery-assignment';
+import { PickUpDeliveryDialog } from '@/features/pickup-delivery';
 import { DataTable, EmptyLoading } from '@/shared/ui';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
@@ -18,6 +23,8 @@ export function DeliveriesDataTable() {
   );
   const [assignDriverDialogOpen, setAssignDriverDialogOpen] = useState(false);
   const [assignTruckDialogOpen, setAssignTruckDialogOpen] = useState(false);
+  const [pickUpDeliveryDialogOpen, setPickUpDeliveryDialogOpen] =
+    useState(false);
   // TODO: add pagination
   const deliveriesQuery = useDeliveries(1, 50);
   if (deliveriesQuery.isLoading) {
@@ -48,6 +55,12 @@ export function DeliveriesDataTable() {
               setSelectedDeliveryId(deliveryId);
               setAssignTruckDialogOpen(true);
             },
+            onSetStatus: (deliveryId, status) => {
+              setSelectedDeliveryId(deliveryId);
+              if (status === DeliveryStatus.PickedUp) {
+                setPickUpDeliveryDialogOpen(true);
+              }
+            },
           }}
         />
       </div>
@@ -63,6 +76,11 @@ export function DeliveriesDataTable() {
             deliveryId={selectedDeliveryId}
             open={assignTruckDialogOpen}
             onOpenChange={setAssignTruckDialogOpen}
+          />
+          <PickUpDeliveryDialog
+            deliveryId={selectedDeliveryId}
+            open={pickUpDeliveryDialogOpen}
+            onOpenChange={setPickUpDeliveryDialogOpen}
           />
         </>
       )}
