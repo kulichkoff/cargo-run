@@ -7,6 +7,7 @@ import {
   DeliveryStatus,
   useDeliveries,
 } from '@/entities/delivery';
+import { useCompleteDelivery } from '@/features/complete-delivery';
 import { CreateDeliveryDialog } from '@/features/create-delivery';
 import {
   AssignDriverDialog,
@@ -27,6 +28,9 @@ export function DeliveriesDataTable() {
     useState(false);
   // TODO: add pagination
   const deliveriesQuery = useDeliveries(1, 50);
+
+  const completeDeliveryMut = useCompleteDelivery();
+
   if (deliveriesQuery.isLoading) {
     return <EmptyLoading spinning={true} />;
   }
@@ -59,6 +63,8 @@ export function DeliveriesDataTable() {
               setSelectedDeliveryId(deliveryId);
               if (status === DeliveryStatus.PickedUp) {
                 setPickUpDeliveryDialogOpen(true);
+              } else if (status === DeliveryStatus.Delivered) {
+                completeDeliveryMut.mutate({ deliveryId });
               }
             },
           }}
