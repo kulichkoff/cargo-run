@@ -15,7 +15,7 @@ import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
 import { useDriversQuery } from '@/entities/driver';
 import { useState } from 'react';
-import { useAssignDriver } from './useAssign';
+import { useAssignDriver } from './useAssignDriver';
 
 export type AssignDriverDialogProps = React.PropsWithChildren<{
   open?: boolean;
