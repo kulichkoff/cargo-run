@@ -4,7 +4,10 @@ import { Button } from '@/components/ui/button';
 import { DialogTrigger } from '@/components/ui/dialog';
 import { deliveryColumns, useDeliveries } from '@/entities/delivery';
 import { CreateDeliveryDialog } from '@/features/create-delivery';
-import { AssignDriverDialog } from '@/features/delivery-assignment';
+import {
+  AssignDriverDialog,
+  AssignTruckDialog,
+} from '@/features/delivery-assignment';
 import { DataTable, EmptyLoading } from '@/shared/ui';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
@@ -14,6 +17,7 @@ export function DeliveriesDataTable() {
     null,
   );
   const [assignDriverDialogOpen, setAssignDriverDialogOpen] = useState(false);
+  const [assignTruckDialogOpen, setAssignTruckDialogOpen] = useState(false);
   // TODO: add pagination
   const deliveriesQuery = useDeliveries(1, 50);
   if (deliveriesQuery.isLoading) {
@@ -40,16 +44,27 @@ export function DeliveriesDataTable() {
               setSelectedDeliveryId(deliveryId);
               setAssignDriverDialogOpen(true);
             },
+            onAssignTruck: (deliveryId) => {
+              setSelectedDeliveryId(deliveryId);
+              setAssignTruckDialogOpen(true);
+            },
           }}
         />
       </div>
 
       {selectedDeliveryId && (
-        <AssignDriverDialog
-          deliveryId={selectedDeliveryId}
-          open={assignDriverDialogOpen}
-          onOpenChange={setAssignDriverDialogOpen}
-        />
+        <>
+          <AssignDriverDialog
+            deliveryId={selectedDeliveryId}
+            open={assignDriverDialogOpen}
+            onOpenChange={setAssignDriverDialogOpen}
+          />
+          <AssignTruckDialog
+            deliveryId={selectedDeliveryId}
+            open={assignTruckDialogOpen}
+            onOpenChange={setAssignTruckDialogOpen}
+          />
+        </>
       )}
     </div>
   );

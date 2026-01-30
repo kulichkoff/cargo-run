@@ -24,6 +24,7 @@ import { Badge } from '@/components/ui/badge';
 declare module '@tanstack/react-table' {
   interface TableMeta<TData extends RowData> {
     onAssignDriver: (deliveryId: number) => void;
+    onAssignTruck: (deliveryId: number) => void;
   }
 }
 
@@ -101,7 +102,11 @@ export const deliveryColumns: ColumnDef<DeliveryModel>[] = [
             >
               Назначить водителя
             </DropdownMenuItem>
-            <DropdownMenuItem>Назначить машину</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => table.options.meta?.onAssignTruck?.(delivery.id)}
+            >
+              Назначить машину
+            </DropdownMenuItem>
             <DropdownMenuItem>Установить заказчика</DropdownMenuItem>
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>Установить статус</DropdownMenuSubTrigger>
