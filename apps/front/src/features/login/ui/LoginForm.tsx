@@ -51,7 +51,7 @@ export function LoginForm() {
                 Имя пользователя<span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
-                <Input placeholder="admin" {...field} />
+                <Input {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
