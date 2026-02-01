@@ -1,8 +1,10 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { DialogTrigger } from '@/components/ui/dialog';
 import { useTrucksQuery } from '@/entities/truck';
 import { trucksColumns } from '@/entities/truck/columns';
+import { CreateTruckDialog } from '@/features/create-truck';
 import { DataTable, EmptyLoading } from '@/shared/ui';
 import { Plus } from 'lucide-react';
 
@@ -14,10 +16,14 @@ export function TrucksDataTable() {
   return (
     <div>
       <div className="pb-3 flex flex-row w-full gap-3 items-center justify-end">
-        <Button size="sm">
-          <Plus />
-          Добавить
-        </Button>
+        <CreateTruckDialog>
+          <DialogTrigger asChild>
+            <Button size="sm">
+              <Plus />
+              Добавить
+            </Button>
+          </DialogTrigger>
+        </CreateTruckDialog>
       </div>
       <div className="overflow-x-auto">
         <DataTable columns={trucksColumns} data={trucksQuery.data ?? []} />
