@@ -20,6 +20,7 @@ import { MoreHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { dateToCalendar } from '@/shared/lib/transform/date';
 import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
 
 declare module '@tanstack/react-table' {
   interface TableMeta<TData extends RowData> {
@@ -30,6 +31,26 @@ declare module '@tanstack/react-table' {
 }
 
 export const deliveryColumns: ColumnDef<DeliveryModel>[] = [
+  {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && 'indeterminate')
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+  },
   {
     id: 'driver',
     accessorFn: ({ driver }) =>
@@ -116,7 +137,9 @@ export const deliveryColumns: ColumnDef<DeliveryModel>[] = [
                   <DropdownMenuItem
                     key={status}
                     disabled={delivery.status === status}
-                    onClick={() => table.options.meta?.onSetStatus?.(delivery.id, status)}
+                    onClick={() =>
+                      table.options.meta?.onSetStatus?.(delivery.id, status)
+                    }
                   >
                     {getDeliveryStatusLocale(status)}
                   </DropdownMenuItem>
