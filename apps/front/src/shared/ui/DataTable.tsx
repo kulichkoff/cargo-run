@@ -12,6 +12,7 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  RowSelectionState,
   SortingState,
   TableMeta,
   useReactTable,
@@ -32,12 +33,14 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   meta?: TableMeta<TData>;
+  onRowsSelectionChange?: (rows: RowSelectionState) => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   meta,
+  onRowsSelectionChange,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -50,7 +53,10 @@ export function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
+    onRowSelectionChange: (selection) => {
+      setRowSelection(selection);
+      onRowsSelectionChange?.(rowSelection);
+    },
     state: {
       sorting,
       columnVisibility,

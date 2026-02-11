@@ -50,6 +50,9 @@ export function DeliveriesDataTable() {
         <DataTable
           columns={deliveryColumns}
           data={deliveriesQuery.data?.hits ?? []}
+          onRowsSelectionChange={(rows) => {
+            console.log(rows);
+          }}
           meta={{
             onAssignDriver: (deliveryId) => {
               setSelectedDeliveryId(deliveryId);
