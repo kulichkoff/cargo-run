@@ -72,7 +72,6 @@ export function DeliveriesDataTable() {
           columns={deliveryColumns}
           data={deliveriesQuery.data?.hits ?? []}
           onRowsSelectionChange={(rows) => {
-            console.log('rows', rows);
             const deliveries = deliveriesQuery.data?.hits;
             const selectedDeliveries = Object.keys(rows).map(
               (idx) => deliveries?.[+idx],
