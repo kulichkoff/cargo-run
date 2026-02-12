@@ -13,6 +13,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   OnChangeFn,
+  PaginationState,
   RowSelectionState,
   SortingState,
   TableMeta,
@@ -28,13 +29,17 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   meta?: TableMeta<TData>;
   onRowsSelectionChange?: OnChangeFn<RowSelectionState>;
+  manualPagination?: boolean;
+  pagination?: PaginationState;
+  rowCount?: number;
+  onPaginationChange?: OnChangeFn<PaginationState>;
 }
 
 export function DataTable<TData, TValue>({
@@ -42,6 +47,10 @@ export function DataTable<TData, TValue>({
   data,
   meta,
   onRowsSelectionChange,
+  manualPagination,
+  pagination,
+  rowCount,
+  onPaginationChange,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -51,7 +60,7 @@ export function DataTable<TData, TValue>({
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    getPaginationRowModel: pagination ? undefined : getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: (value) => {
@@ -62,10 +71,14 @@ export function DataTable<TData, TValue>({
         onRowsSelectionChange?.(value);
       }
     },
+    onPaginationChange,
+    manualPagination,
+    rowCount,
     state: {
       sorting,
       columnVisibility,
       rowSelection,
+      pagination: pagination ?? { pageIndex: 0, pageSize: 1000 },
     },
     meta,
   });
@@ -157,6 +170,26 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
+      {pagination && (
+        <div className="flex items-center justify-end space-x-2 py-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            <ChevronLeft />
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            <ChevronRight />
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

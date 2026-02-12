@@ -18,6 +18,7 @@ import { CreatePaymentDialog } from '@/features/create-delivery-payment';
 import { DataTable, EmptyLoading } from '@/shared/ui';
 import { Plus, BanknoteArrowDown } from 'lucide-react';
 import { useState } from 'react';
+import { PaginationState } from '@tanstack/react-table';
 
 export function DeliveriesDataTable() {
   const [selectedDeliveryId, setSelectedDeliveryId] = useState<number | null>(
@@ -28,8 +29,9 @@ export function DeliveriesDataTable() {
   const [assignTruckDialogOpen, setAssignTruckDialogOpen] = useState(false);
   const [pickUpDeliveryDialogOpen, setPickUpDeliveryDialogOpen] =
     useState(false);
-  // TODO: add pagination
-  const deliveriesQuery = useDeliveries(1, 50);
+
+  const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 50 });
+  const deliveriesQuery = useDeliveries(pagination.pageIndex + 1, pagination.pageSize);
 
   const completeDeliveryMut = useCompleteDelivery();
 
@@ -80,6 +82,10 @@ export function DeliveriesDataTable() {
               .map((d) => d!.id);
             setSelectedDeliveryIds(deliveryIds);
           }}
+          rowCount={deliveriesQuery.data?.total ?? -1}
+          manualPagination
+          pagination={pagination}
+          onPaginationChange={setPagination}
           meta={{
             onAssignDriver: (deliveryId) => {
               setSelectedDeliveryId(deliveryId);

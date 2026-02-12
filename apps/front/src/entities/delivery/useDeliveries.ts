@@ -1,7 +1,7 @@
 import { clientAxios } from '@/shared/lib/client-fetcher';
 import { DeliveryModel } from './delivery.model';
 import { PaginatedResponse } from '@/shared/api';
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 async function fetchDeliveries(
   page: number,
@@ -30,5 +30,6 @@ export const useDeliveries = (page: number, pageSize: number) => {
   return useQuery({
     queryKey: ['deliveries', { page, pageSize }],
     queryFn: () => fetchDeliveries(page, pageSize),
+    placeholderData: keepPreviousData,
   });
 };
