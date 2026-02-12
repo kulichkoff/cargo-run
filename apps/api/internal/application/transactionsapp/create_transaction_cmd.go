@@ -29,7 +29,7 @@ func (c *CreateTransactionCommand) Execute(ctx context.Context) error {
 		return err
 	}
 
-	if *c.Status == string(transactions.TransactionStatusCompleted) {
+	if c.Status != nil && *c.Status == string(transactions.TransactionStatusCompleted) {
 		if err := t.MarkCompleted(); err != nil {
 			return err
 		}
