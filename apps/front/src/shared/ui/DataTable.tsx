@@ -6,7 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   flexRender,
   getCoreRowModel,
@@ -55,7 +55,6 @@ export function DataTable<TData, TValue>({
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: (selection) => {
       setRowSelection(selection);
-      onRowsSelectionChange?.(rowSelection);
     },
     state: {
       sorting,
@@ -64,6 +63,9 @@ export function DataTable<TData, TValue>({
     },
     meta,
   });
+  useEffect(() => {
+    onRowsSelectionChange?.(rowSelection);
+  }, [onRowsSelectionChange, rowSelection]);
 
   return (
     <div className="w-full">

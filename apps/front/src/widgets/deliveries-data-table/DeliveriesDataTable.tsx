@@ -51,7 +51,11 @@ export function DeliveriesDataTable() {
           columns={deliveryColumns}
           data={deliveriesQuery.data?.hits ?? []}
           onRowsSelectionChange={(rows) => {
-            console.log(rows);
+            const deliveries = deliveriesQuery.data?.hits;
+            console.log(
+              'selected deliveries',
+              Object.keys(rows).map((idx) => deliveries?.[+idx]),
+            );
           }}
           meta={{
             onAssignDriver: (deliveryId) => {
