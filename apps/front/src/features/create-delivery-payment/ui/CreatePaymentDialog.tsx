@@ -22,6 +22,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
+  TransactionStatus,
   TransactionType,
   type CreateTransactionDto,
 } from '@/entities/transaction';
@@ -43,6 +44,7 @@ export function CreatePaymentDialog({
     const dto: CreateTransactionDto = {
       ...data,
       type: TransactionType.Income,
+      status: TransactionStatus.Completed,
       deliveries: deliveryIds,
     };
 
