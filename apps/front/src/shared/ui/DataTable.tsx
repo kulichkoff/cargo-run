@@ -12,6 +12,7 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  OnChangeFn,
   RowSelectionState,
   SortingState,
   TableMeta,
@@ -33,7 +34,7 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   meta?: TableMeta<TData>;
-  onRowsSelectionChange?: (rows: RowSelectionState) => void;
+  onRowsSelectionChange?: OnChangeFn<RowSelectionState>;
 }
 
 export function DataTable<TData, TValue>({
@@ -53,7 +54,14 @@ export function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
+    onRowSelectionChange: (value) => {
+      setRowSelection(value);
+      if (typeof value === 'function') {
+        onRowsSelectionChange?.(value(rowSelection));
+      } else {
+        onRowsSelectionChange?.(value);
+      }
+    },
     state: {
       sorting,
       columnVisibility,
@@ -61,9 +69,11 @@ export function DataTable<TData, TValue>({
     },
     meta,
   });
-  useEffect(() => {
-    onRowsSelectionChange?.(rowSelection);
-  }, [onRowsSelectionChange, rowSelection]);
+  // useEffect(() => {
+  //   if (onRowsSelectionChange && Object.keys(rowSelection).length > 0) {
+  //     onRowsSelectionChange?.(rowSelection);
+  //   }
+  // }, [onRowsSelectionChange, rowSelection]);
 
   return (
     <div className="w-full">

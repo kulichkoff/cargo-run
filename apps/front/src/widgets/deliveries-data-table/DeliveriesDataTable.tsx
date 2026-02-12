@@ -14,14 +14,16 @@ import {
   AssignTruckDialog,
 } from '@/features/delivery-assignment';
 import { PickUpDeliveryDialog } from '@/features/pickup-delivery';
+import { CreatePaymentDialog } from '@/features/create-delivery-payment';
 import { DataTable, EmptyLoading } from '@/shared/ui';
-import { Plus } from 'lucide-react';
+import { Plus, BanknoteArrowDown } from 'lucide-react';
 import { useState } from 'react';
 
 export function DeliveriesDataTable() {
   const [selectedDeliveryId, setSelectedDeliveryId] = useState<number | null>(
     null,
   );
+  const [selectedDeliveryIds, setSelectedDeliveryIds] = useState<number[]>([]);
   const [assignDriverDialogOpen, setAssignDriverDialogOpen] = useState(false);
   const [assignTruckDialogOpen, setAssignTruckDialogOpen] = useState(false);
   const [pickUpDeliveryDialogOpen, setPickUpDeliveryDialogOpen] =
@@ -36,26 +38,47 @@ export function DeliveriesDataTable() {
   }
   return (
     <div>
-      <CreateDeliveryDialog>
-        <div className="pb-3 flex flex-row w-full gap-3 items-center justify-end">
+      <div className="pb-3 flex flex-row w-full gap-3 items-center justify-between">
+        <div className="flex gap-2 items-center">
+          {selectedDeliveryIds.length > 0 && (
+            <>
+              <span className="text-sm text-muted-foreground">
+                Выбрано: {selectedDeliveryIds.length}
+              </span>
+              <CreatePaymentDialog deliveryIds={selectedDeliveryIds}>
+                <DialogTrigger asChild>
+                  <Button size="sm" variant="outline">
+                    <BanknoteArrowDown />
+                    Создать платеж
+                  </Button>
+                </DialogTrigger>
+              </CreatePaymentDialog>
+            </>
+          )}
+        </div>
+        <CreateDeliveryDialog>
           <DialogTrigger asChild>
             <Button size="sm">
               <Plus />
               Добавить
             </Button>
           </DialogTrigger>
-        </div>
-      </CreateDeliveryDialog>
+        </CreateDeliveryDialog>
+      </div>
       <div className="overflow-x-auto">
         <DataTable
           columns={deliveryColumns}
           data={deliveriesQuery.data?.hits ?? []}
           onRowsSelectionChange={(rows) => {
+            console.log('rows', rows);
             const deliveries = deliveriesQuery.data?.hits;
-            console.log(
-              'selected deliveries',
-              Object.keys(rows).map((idx) => deliveries?.[+idx]),
+            const selectedDeliveries = Object.keys(rows).map(
+              (idx) => deliveries?.[+idx],
             );
+            const deliveryIds = selectedDeliveries
+              .filter((d) => d?.id)
+              .map((d) => d!.id);
+            setSelectedDeliveryIds(deliveryIds);
           }}
           meta={{
             onAssignDriver: (deliveryId) => {
