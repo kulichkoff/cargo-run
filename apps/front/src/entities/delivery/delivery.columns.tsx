@@ -33,6 +33,7 @@ declare module '@tanstack/react-table' {
 export const deliveryColumns: ColumnDef<DeliveryModel>[] = [
   {
     id: 'select',
+    enableHiding: false,
     header: ({ table }) => (
       <Checkbox
         checked={
