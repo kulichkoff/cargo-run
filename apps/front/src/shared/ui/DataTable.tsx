@@ -6,7 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   flexRender,
   getCoreRowModel,
@@ -82,11 +82,6 @@ export function DataTable<TData, TValue>({
     },
     meta,
   });
-  // useEffect(() => {
-  //   if (onRowsSelectionChange && Object.keys(rowSelection).length > 0) {
-  //     onRowsSelectionChange?.(rowSelection);
-  //   }
-  // }, [onRowsSelectionChange, rowSelection]);
 
   return (
     <div className="w-full">
