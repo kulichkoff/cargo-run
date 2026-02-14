@@ -21,4 +21,5 @@
 	--color-background: var(--color-background);
 	--color-primary: var(--color-primary);
 	--color-primary-foreground: var(--color-primary-foreground);
+	--color-danger: oklch(57.7% 0.245 27.325);
 }

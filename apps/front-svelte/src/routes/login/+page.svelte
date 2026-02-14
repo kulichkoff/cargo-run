@@ -2,6 +2,7 @@
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { valibotClient } from 'sveltekit-superforms/adapters';
 	import { LoginSchema, type LoginDTO } from '$lib/auth';
+	import { Input } from '$lib/shared/ui';
 
 	let { data }: { data: { form: SuperValidated<LoginDTO> } } = $props();
 	const { form, errors, enhance } = superForm(data.form, {
@@ -17,14 +18,11 @@
 	}
 </script>
 
-<form method="POST" use:enhance>
-	<input type="text" name="username" bind:value={$form.username} />
-	{#if $errors.username}
-		<p>{$errors.username}</p>
-	{/if}
-	<input type="password" name="password" bind:value={$form.password} />
-	{#if $errors.password}
-		<p>{$errors.password}</p>
-	{/if}
-	<button type="submit">Login</button>
-</form>
+<div class="flex min-h-full flex-col items-center justify-center px-8 py-12 lg:px-12">
+	<form method="POST" use:enhance class="grid w-xl max-w-full gap-4">
+    <h1 class="text-2xl font-bold">Login</h1>
+		<Input label="Username" name="username" type="text" bind:value={$form.username} {errors} />
+		<Input label="Password" name="password" type="password" bind:value={$form.password} {errors} />
+		<button type="submit">Login</button>
+	</form>
+</div>
