@@ -9,10 +9,7 @@
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
 
-<main class="bg-background text-foreground min-h-screen">
-	<button class="bg-primary text-primary-foreground">
-		Click me
-	</button>
+<main class="min-h-screen bg-background text-foreground">
 	{@render children()}
 </main>
 <div style="display:none">
