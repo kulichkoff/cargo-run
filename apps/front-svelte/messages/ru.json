@@ -1,4 +1,8 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"hello_world": "Hello, {name} from ru!"
+	"hello_world": "Hello, {name} from ru!",
+	"login_title": "Вход",
+	"login_username": "Имя пользователя",
+	"login_password": "Пароль",
+	"login_login": "Войти"
 }
