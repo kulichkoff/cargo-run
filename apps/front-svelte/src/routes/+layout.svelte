@@ -9,7 +9,12 @@
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
 
-{@render children()}
+<main class="bg-background text-foreground min-h-screen">
+	<button class="bg-primary text-primary-foreground">
+		Click me
+	</button>
+	{@render children()}
+</main>
 <div style="display:none">
 	{#each locales as locale}
 		<a href={localizeHref(page.url.pathname, { locale })}>
