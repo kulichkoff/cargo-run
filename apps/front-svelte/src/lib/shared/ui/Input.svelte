@@ -1,5 +1,6 @@
 <script lang="ts" generics="T extends Record<string, unknown>">
 	import type { SuperFormErrors } from 'sveltekit-superforms/client';
+	import * as m from '$lib/paraglide/messages';
 
 	let {
 		label,
@@ -35,5 +36,5 @@
 			/>
 		</div>
 	</div>
-	<p class="mt-3 text-sm/6 text-danger">{$errors[name]}</p>
+	<p class="mt-3 text-sm/6 text-danger">{m[$errors[name]]?.() || $errors[name]}</p>
 </div>

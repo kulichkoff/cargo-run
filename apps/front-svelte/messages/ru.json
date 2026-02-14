@@ -1,6 +1,7 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
 	"hello_world": "Hello, {name} from ru!",
+	"validation_required_field": "Обязательное поле",
 	"login_title": "Вход",
 	"login_username": "Имя пользователя",
 	"login_password": "Пароль",
