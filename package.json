@@ -10,5 +10,10 @@
   "author": "Daniel Kulichkov <danchick03@gmail.com>",
   "devDependencies": {
     "prettier": "3.7.4"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }
